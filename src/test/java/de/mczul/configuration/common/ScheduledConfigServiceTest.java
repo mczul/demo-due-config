@@ -12,16 +12,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @SpringBootTest
-class EntryServiceTest {
+class ScheduledConfigServiceTest {
 
     @Autowired
-    private EntryRepository entryRepository;
+    private ScheduledConfigRepository entryRepository;
     @Autowired
-    private EntryService underTest;
+    private ScheduledConfigService underTest;
 
     @Test
     void notExisting() {
-        Optional<Entry> entry = underTest.get("MY_KEY_NOT_EXISTING");
+        Optional<ScheduledConfigEntry> entry = underTest.get("MY_KEY_NOT_EXISTING");
         assertThat(entry).isEmpty();
     }
 
@@ -29,7 +29,7 @@ class EntryServiceTest {
     void onlyFuture() {
         final String KEY = "MY_KEY_ONLY_FUTURE";
 
-        Entry first = Entry.builder()
+        ScheduledConfigEntry first = ScheduledConfigEntry.builder()
                 .key(KEY)
                 .validFrom(LocalDateTime.now().plusMinutes(5))
                 .value("1")
@@ -37,7 +37,7 @@ class EntryServiceTest {
 
         underTest.set(first);
 
-        Optional<Entry> entry = underTest.get(KEY);
+        Optional<ScheduledConfigEntry> entry = underTest.get(KEY);
         assertThat(entry).isEmpty();
     }
 
@@ -45,21 +45,21 @@ class EntryServiceTest {
     void previousAndCurrentAndFuture() throws InterruptedException {
         final String KEY = "MY_KEY_PREVIOUS_AND_CURRENT_AND_FUTURE";
 
-        Entry previous = Entry.builder()
+        ScheduledConfigEntry previous = ScheduledConfigEntry.builder()
                 .key(KEY)
                 .validFrom(LocalDateTime.now().minusMinutes(5))
                 .value("1")
                 .build();
 
-        Entry current = Entry.builder()
+        ScheduledConfigEntry current = ScheduledConfigEntry.builder()
                 .key(KEY)
-                .validFrom(LocalDateTime.now().minusSeconds(2))
+                .validFrom(LocalDateTime.now().minusSeconds(1))
                 .value("2")
                 .build();
 
-        Entry future = Entry.builder()
+        ScheduledConfigEntry future = ScheduledConfigEntry.builder()
                 .key(KEY)
-                .validFrom(LocalDateTime.now().plusSeconds(2))
+                .validFrom(LocalDateTime.now().plusSeconds(1))
                 .value("3")
                 .build();
 
@@ -69,15 +69,16 @@ class EntryServiceTest {
 
         // Debug output
         entryRepository.findAll().stream()
-                .map(Entry::toString)
+                .map(ScheduledConfigEntry::toString)
                 .forEach(log::info);
 
         // Current
-        Optional<Entry> entry = underTest.get(KEY);
+        Optional<ScheduledConfigEntry> entry = underTest.get(KEY);
         assertThat(entry).isPresent();
         assertThat(entry.get().getValue()).isEqualTo("2");
 
-        Thread.sleep(4000, 0);
+        // Wait for future
+        Thread.sleep(1250);
 
         // Future
         entry = underTest.get(KEY);

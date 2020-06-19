@@ -15,29 +15,30 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class EntryService {
-    private final EntryRepository entryRepository;
+public class ScheduledConfigService {
+    private final ScheduledConfigRepository entryRepository;
 
     @Transactional
-    public void set(Entry entry) {
+    public void set(ScheduledConfigEntry entry) {
         entryRepository.save(entry);
     }
 
     @Transactional(readOnly = true)
-    public Optional<Entry> get(String key) {
+    public Optional<ScheduledConfigEntry> get(String key) {
+        // Remove all future configuration values
+        // Sort configuration entries descending by "validFrom" timestamp
+        // Fetch the one with the latest "validFrom" value
         return entryRepository.findByKey(key).stream()
                 // Remove all future configuration values
                 .filter(e -> !e.getValidFrom().isAfter(LocalDateTime.now()))
-                // Sort configuration entries descending by "validFrom" timestamp
-                .sorted(Comparator.comparing(Entry::getValidFrom).reversed())
-                // Fetch the one with the latest "validFrom" value
-                .findFirst();
+                // Fetch the config entry with the max "valid from" value
+                .max(Comparator.comparing(ScheduledConfigEntry::getValidFrom));
     }
 
     @Transactional
     @Scheduled(fixedRate = 5000)
     void cleanup() {
-        List<Entry> activeOrObsolete = entryRepository.findAll().stream()
+        List<ScheduledConfigEntry> activeOrObsolete = entryRepository.findAll().stream()
                 .filter(e -> e.getValidFrom().isBefore(LocalDateTime.now()))
                 .collect(Collectors.toUnmodifiableList());
         log.info("Found {} entries that are active or obsolete", activeOrObsolete.size());

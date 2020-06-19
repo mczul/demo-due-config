@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "entry")
-public class Entry {
-    private static final String SEQ_NAME = "seq_entry";
+@Table(name = "scheduled_config")
+public class ScheduledConfigEntry {
+    private static final String SEQ_NAME = "seq_scheduled_config";
 
     @Id
     @SequenceGenerator(name = SEQ_NAME)
