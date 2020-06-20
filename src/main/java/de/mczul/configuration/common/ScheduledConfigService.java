@@ -25,14 +25,7 @@ public class ScheduledConfigService {
 
     @Transactional(readOnly = true)
     public Optional<ScheduledConfigEntry> get(String key) {
-        // Remove all future configuration values
-        // Sort configuration entries descending by "validFrom" timestamp
-        // Fetch the one with the latest "validFrom" value
-        return entryRepository.findByKey(key).stream()
-                // Remove all future configuration values
-                .filter(e -> !e.getValidFrom().isAfter(LocalDateTime.now()))
-                // Fetch the config entry with the max "valid from" value
-                .max(Comparator.comparing(ScheduledConfigEntry::getValidFrom));
+        return entryRepository.findCurrentByKey(key);
     }
 
     @Transactional

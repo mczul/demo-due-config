@@ -15,11 +15,23 @@ public interface ScheduledConfigRepository extends JpaRepository<ScheduledConfig
             "where e1.key = ?1 " +
             "and e1.validFrom <= current_timestamp " +
             "and not exists( " +
-            "select 'x' " +
-            "from ScheduledConfigEntry e2 " +
-            "where e1.key = e2.key " +
-            "and e2.validFrom <= current_timestamp " +
-            "and e2.validFrom > e1.validFrom " +
+            "   select 'x' " +
+            "   from ScheduledConfigEntry e2 " +
+            "   where e1.key = e2.key " +
+            "   and e2.validFrom <= current_timestamp " +
+            "   and e2.validFrom > e1.validFrom " +
             ")")
     Optional<ScheduledConfigEntry> findCurrentByKey(String key);
+
+    @Query("select e1 " +
+            "from ScheduledConfigEntry e1 " +
+            "where e1.validFrom <= current_timestamp " +
+            "and exists( " +
+            "   select 'x' " +
+            "   from ScheduledConfigEntry e2 " +
+            "   where e1.key = e2.key " +
+            "   and e2.validFrom <= current_timestamp " +
+            "   and e2.validFrom > e1.validFrom " +
+            ")")
+    List<ScheduledConfigEntry> findOutdated();
 }
