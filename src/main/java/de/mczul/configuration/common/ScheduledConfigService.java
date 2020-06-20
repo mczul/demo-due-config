@@ -31,9 +31,7 @@ public class ScheduledConfigService {
     @Transactional
     @Scheduled(fixedRate = 5000)
     void cleanup() {
-        List<ScheduledConfigEntry> activeOrObsolete = entryRepository.findAll().stream()
-                .filter(e -> e.getValidFrom().isBefore(LocalDateTime.now()))
-                .collect(Collectors.toUnmodifiableList());
-        log.info("Found {} entries that are active or obsolete", activeOrObsolete.size());
+        List<ScheduledConfigEntry> obsolete = entryRepository.findOutdated();
+        log.info("Found {} entries that are obsolete", obsolete.size());
     }
 }

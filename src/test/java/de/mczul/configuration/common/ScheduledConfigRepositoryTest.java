@@ -68,8 +68,8 @@ class ScheduledConfigRepositoryTest {
                 .collect(Collectors.toUnmodifiableList());
         var actualEntries = underTest.findOutdated();
 
-
         assertThat(actualEntries).hasSize(expectedEntries.size());
+        assertThat(actualEntries).containsExactlyInAnyOrder(expectedEntries.toArray(new ScheduledConfigEntry[0]));
     }
 
     @Transactional

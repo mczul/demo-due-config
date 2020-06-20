@@ -10,28 +10,28 @@ public interface ScheduledConfigRepository extends JpaRepository<ScheduledConfig
 
     List<ScheduledConfigEntry> findByKey(String key);
 
-    @Query("select e1 " +
-            "from ScheduledConfigEntry e1 " +
-            "where e1.key = ?1 " +
-            "and e1.validFrom <= current_timestamp " +
-            "and not exists( " +
-            "   select 'x' " +
-            "   from ScheduledConfigEntry e2 " +
-            "   where e1.key = e2.key " +
-            "   and e2.validFrom <= current_timestamp " +
-            "   and e2.validFrom > e1.validFrom " +
+    @Query("SELECT e1 " +
+            "FROM ScheduledConfigEntry e1 " +
+            "WHERE e1.key = ?1 " +
+            "AND e1.validFrom <= current_timestamp " +
+            "AND NOT EXISTS( " +
+            "   SELECT 'x' " +
+            "   FROM ScheduledConfigEntry e2 " +
+            "   WHERE e1.key = e2.key " +
+            "   AND e2.validFrom <= current_timestamp " +
+            "   AND e2.validFrom > e1.validFrom " +
             ")")
     Optional<ScheduledConfigEntry> findCurrentByKey(String key);
 
-    @Query("select e1 " +
-            "from ScheduledConfigEntry e1 " +
-            "where e1.validFrom <= current_timestamp " +
-            "and exists( " +
-            "   select 'x' " +
-            "   from ScheduledConfigEntry e2 " +
-            "   where e1.key = e2.key " +
-            "   and e2.validFrom <= current_timestamp " +
-            "   and e2.validFrom > e1.validFrom " +
+    @Query("SELECT e1 " +
+            "FROM ScheduledConfigEntry e1 " +
+            "WHERE e1.validFrom <= current_timestamp " +
+            "AND EXISTS( " +
+            "   SELECT 'x' " +
+            "   FROM ScheduledConfigEntry e2 " +
+            "   WHERE e1.key = e2.key " +
+            "   AND e2.validFrom <= current_timestamp " +
+            "   AND e2.validFrom > e1.validFrom " +
             ")")
     List<ScheduledConfigEntry> findOutdated();
 }
