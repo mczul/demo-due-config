@@ -11,12 +11,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "scheduled_config")
+@Table(name = "scheduled_config", schema = ScheduledConfigEntry.SCHEMA_NAME)
 public class ScheduledConfigEntry {
-    private static final String SEQ_NAME = "seq_scheduled_config";
+    public static final String SEQ_NAME = "seq_scheduled_config";
+    public static final String SCHEMA_NAME = "config";
 
     @Id
-    @SequenceGenerator(name = SEQ_NAME)
+    @SequenceGenerator(name = SEQ_NAME, schema = SCHEMA_NAME)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
     @Column(name = "id")
     private Integer id;
