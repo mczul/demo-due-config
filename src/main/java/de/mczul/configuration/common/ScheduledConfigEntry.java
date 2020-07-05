@@ -3,6 +3,8 @@ package de.mczul.configuration.common;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -22,9 +24,12 @@ public class ScheduledConfigEntry {
     @Column(name = "id")
     private Integer id;
 
+    @NotNull(message = "{NotNull.scheduledConfig.key}")
+    @NotBlank(message = "{NotBlank.scheduledConfig.key}")
     @Column(name = "key")
     private String key;
 
+    @NotNull(message = "{NotNull.scheduledConfig.validFrom}")
     @Column(name = "valid_from")
     private LocalDateTime validFrom;
 

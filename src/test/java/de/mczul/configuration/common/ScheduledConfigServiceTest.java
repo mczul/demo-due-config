@@ -70,7 +70,7 @@ class ScheduledConfigServiceTest {
         // Debug output
         entryRepository.findAll().stream()
                 .map(ScheduledConfigEntry::toString)
-                .forEach(log::info);
+                .forEach(LOG::info);
 
         // Current
         Optional<ScheduledConfigEntry> entry = underTest.get(KEY);

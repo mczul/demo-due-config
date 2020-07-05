@@ -6,11 +6,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -32,6 +29,6 @@ public class ScheduledConfigService {
     @Scheduled(fixedRate = 5000)
     void cleanup() {
         List<ScheduledConfigEntry> obsolete = entryRepository.findOutdated();
-        log.info("Found {} entries that are obsolete", obsolete.size());
+        LOG.info("Found {} entries that are obsolete", obsolete.size());
     }
 }

@@ -6,12 +6,17 @@
 	                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
     <changeSet id="init-1-1" author="mczul">
         <sql>CREATE SCHEMA config;</sql>
-        <createSequence sequenceName="seq_scheduled_config" schemaName="config" startValue="100" incrementBy="1" />
+        <createSequence sequenceName="seq_scheduled_config" schemaName="config" startValue="100" incrementBy="1"/>
         <createTable tableName="scheduled_config" schemaName="config">
             <column name="id" type="INTEGER"/>
             <column name="key" type="VARCHAR(255)"/>
             <column name="valid_from" type="TIMESTAMP"/>
             <column name="value" type="TEXT"/>
         </createTable>
+        <addNotNullConstraint schemaName="config" tableName="scheduled_config" columnName="id"/>
+        <addNotNullConstraint schemaName="config" tableName="scheduled_config" columnName="key"/>
+        <addNotNullConstraint schemaName="config" tableName="scheduled_config" columnName="valid_from"/>
+        <addPrimaryKey schemaName="config" tableName="scheduled_config" columnNames="id"/>
+        <addUniqueConstraint schemaName="config" tableName="scheduled_config" columnNames="key,valid_from"/>
     </changeSet>
 </databaseChangeLog>
