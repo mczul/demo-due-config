@@ -4,6 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 	                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
     <changeSet id="init-1-1" author="mczul">
         <sql>CREATE SCHEMA config;</sql>
         <createSequence sequenceName="seq_scheduled_config" schemaName="config" startValue="100" incrementBy="1"/>
@@ -19,4 +20,5 @@
         <addPrimaryKey schemaName="config" tableName="scheduled_config" columnNames="id"/>
         <addUniqueConstraint schemaName="config" tableName="scheduled_config" columnNames="key,valid_from"/>
     </changeSet>
+
 </databaseChangeLog>

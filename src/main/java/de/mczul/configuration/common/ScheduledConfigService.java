@@ -5,19 +5,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@Validated
 @Service
 @RequiredArgsConstructor
 public class ScheduledConfigService {
     private final ScheduledConfigRepository entryRepository;
 
     @Transactional
-    public void set(ScheduledConfigEntry entry) {
-        entryRepository.save(entry);
+    public ScheduledConfigEntry set(ScheduledConfigEntry entry) {
+        return entryRepository.save(entry);
     }
 
     @Transactional(readOnly = true)
