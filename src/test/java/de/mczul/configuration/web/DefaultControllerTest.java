@@ -29,7 +29,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -48,8 +47,8 @@ class DefaultControllerTest {
         return Stream.of(
                 arguments(0, 10, List.of(
                         ScheduledConfigEntry.builder().id(1).key("KEY_A").validFrom(LocalDateTime.now()).value("23").build(),
-                        ScheduledConfigEntry.builder().id(1).key("KEY_A").validFrom(LocalDateTime.now().plusDays(1)).value("42").build(),
-                        ScheduledConfigEntry.builder().id(1).key("KEY_B").validFrom(LocalDateTime.now()).value("4711").build()
+                        ScheduledConfigEntry.builder().id(2).key("KEY_A").validFrom(LocalDateTime.now().plusDays(1)).value("42").build(),
+                        ScheduledConfigEntry.builder().id(3).key("KEY_B").validFrom(LocalDateTime.now()).value("4711").build()
                         )
                 ),
                 arguments(1, 1, List.of())
@@ -69,7 +68,6 @@ class DefaultControllerTest {
                                 .param(RestConstants.REQUEST_PARAM_PAGE_SIZE, String.valueOf(pageSize))
                 )
                 .andExpect(status().isOk())
-                .andDo(print())
                 .andReturn();
 
         verify(scheduledConfigRepository).findAll(PageRequest.of(pageIndex, pageSize, Sort.by("key", "validFrom")));
