@@ -3,6 +3,9 @@ package de.mczul.configuration.web;
 import de.mczul.configuration.common.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,10 +23,14 @@ public class DefaultController {
 
 
     @GetMapping
-    public List<ScheduledConfigDto> getScheduledConfig() {
-        List<ScheduledConfigEntry> domainList = scheduledConfigRepository.findAll();
+    public List<ScheduledConfigDto> getScheduledConfigs(
+            @RequestParam(name = RestConstants.REQUEST_PARAM_PAGE_INDEX, required = false, defaultValue = "0") int pageIndex,
+            @RequestParam(name = RestConstants.REQUEST_PARAM_PAGE_SIZE, required = false, defaultValue = "10") int pageSize
+    ) {
+        PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("key", "validFrom"));
+        Page<ScheduledConfigEntry> domainPage = scheduledConfigRepository.findAll(pageRequest);
 
-        return scheduledConfigMapper.fromDomainList(domainList);
+        return scheduledConfigMapper.fromDomainList(domainPage.toList());
     }
 
     @PostMapping
