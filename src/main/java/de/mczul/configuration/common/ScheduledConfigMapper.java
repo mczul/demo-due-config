@@ -9,10 +9,9 @@ public interface ScheduledConfigMapper {
 
     ScheduledConfigDto fromDomain(ScheduledConfigEntry domain);
 
-    ScheduledConfigEntry toDomain(ScheduledConfigDto dto);
-
     List<ScheduledConfigDto> fromDomainList(List<ScheduledConfigEntry> domainList);
 
+    ScheduledConfigEntry toDomain(ScheduledConfigDto dto);
     List<ScheduledConfigEntry> toDomainList(List<ScheduledConfigDto> dto);
 
 }

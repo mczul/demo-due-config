@@ -6,10 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -35,9 +38,23 @@ public class DefaultController {
 
     @PostMapping
     @ResponseBody
-    public ScheduledConfigDto postScheduledConfig(@RequestBody @Valid ScheduledConfigDto dto) {
+    public ResponseEntity<ScheduledConfigDto> postScheduledConfig(@RequestBody @Valid ScheduledConfigDto dto) {
         ScheduledConfigEntry domain = scheduledConfigMapper.toDomain(dto);
-        return scheduledConfigMapper.fromDomain(scheduledConfigService.set(domain));
+        ScheduledConfigDto result = scheduledConfigMapper.fromDomain(scheduledConfigService.set(domain));
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @GetMapping(path = "config/{" + RestConstants.PATH_VARIABLE_KEY + "}")
+    public ResponseEntity<ScheduledConfigDto> getConfig(
+            @PathVariable(name = RestConstants.PATH_VARIABLE_KEY) String key
+    ) {
+        Optional<ScheduledConfigEntry> entryOptional = scheduledConfigService
+                .get(key);
+        if (entryOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        ScheduledConfigDto result = scheduledConfigMapper.fromDomain(entryOptional.get());
+        return ResponseEntity.ok(result);
     }
 
 }
