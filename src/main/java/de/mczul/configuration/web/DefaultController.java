@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/default/v1")
+@RequestMapping(RestConstants.URL_API_ROOT)
 public class DefaultController {
 
     final ScheduledConfigRepository scheduledConfigRepository;
