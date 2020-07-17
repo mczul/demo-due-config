@@ -44,7 +44,7 @@ public class DefaultController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @GetMapping(path = "config/{" + RestConstants.PATH_VARIABLE_KEY + "}")
+    @GetMapping(path = "{" + RestConstants.PATH_VARIABLE_KEY + "}")
     public ResponseEntity<ScheduledConfigDto> getConfig(
             @PathVariable(name = RestConstants.PATH_VARIABLE_KEY) String key
     ) {
