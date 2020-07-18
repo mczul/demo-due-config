@@ -1,0 +1,14 @@
+{
+  "name": "scheduled-config-frontend",
+  "version": "1.0.0",
+  "description": "A tiny Angular based frontend for scheduled configs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Christoph Zuleger",
+  "license": "ISC",
+  "devDependencies": {
+    "@angular/cli": "^10.0.3"
+  }
+}
