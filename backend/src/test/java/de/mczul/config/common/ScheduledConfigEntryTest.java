@@ -1,7 +1,6 @@
 package de.mczul.config.common;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -84,7 +83,7 @@ class ScheduledConfigEntryTest {
     }
 
     @Test
-    @Disabled("TODO: Check for options of lombok to handle null id values properly")
+//    @Disabled("TODO: Check for options of lombok to handle null id values properly")
     void testEqualsHashCode() {
         var referenceTimestamp = LocalDateTime.now();
         var first = ScheduledConfigEntry.builder()

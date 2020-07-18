@@ -62,7 +62,7 @@ class DefaultControllerTest {
 
     @ParameterizedTest
     @MethodSource("buildGetQueryArgs")
-    void testGet(int pageIndex, int pageSize, List<ScheduledConfigEntry> expectedEntries) throws Exception {
+    void getQuery(int pageIndex, int pageSize, List<ScheduledConfigEntry> expectedEntries) throws Exception {
         List<ScheduledConfigDto> expectedDtos = scheduledConfigMapper.fromDomainList(expectedEntries);
         when(scheduledConfigRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(expectedEntries));
 

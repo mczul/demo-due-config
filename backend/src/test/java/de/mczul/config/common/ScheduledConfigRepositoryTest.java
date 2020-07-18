@@ -1,6 +1,7 @@
 package de.mczul.config.common;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +22,13 @@ class ScheduledConfigRepositoryTest {
 
     @Autowired
     private ScheduledConfigRepository underTest;
+    @Autowired
+    private ScheduledConfigRepository repository;
+
+    @BeforeEach
+    void beforeEach() {
+        repository.deleteAll();
+    }
 
     @Transactional
     @Test
