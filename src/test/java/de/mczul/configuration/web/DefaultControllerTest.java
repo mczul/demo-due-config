@@ -63,9 +63,9 @@ class DefaultControllerTest {
 
         MvcResult result = mockMvc
                 .perform(
-                        get(RestConstants.URL_API_ROOT)
-                                .param(RestConstants.REQUEST_PARAM_PAGE_INDEX, String.valueOf(pageIndex))
-                                .param(RestConstants.REQUEST_PARAM_PAGE_SIZE, String.valueOf(pageSize))
+                        get(RestConstants.PATH_PREFIX_API)
+                                .param(RestConstants.QUERY_PARAM_PAGE_INDEX, String.valueOf(pageIndex))
+                                .param(RestConstants.QUERY_PARAM_PAGE_SIZE, String.valueOf(pageSize))
                 )
                 .andExpect(status().isOk())
                 .andReturn();

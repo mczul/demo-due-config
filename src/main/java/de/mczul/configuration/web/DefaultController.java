@@ -17,7 +17,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(RestConstants.URL_API_ROOT)
+@RequestMapping(RestConstants.PATH_PREFIX_API)
 public class DefaultController {
 
     final ScheduledConfigRepository scheduledConfigRepository;
@@ -27,8 +27,8 @@ public class DefaultController {
 
     @GetMapping
     public List<ScheduledConfigDto> getScheduledConfigs(
-            @RequestParam(name = RestConstants.REQUEST_PARAM_PAGE_INDEX, required = false, defaultValue = "0") int pageIndex,
-            @RequestParam(name = RestConstants.REQUEST_PARAM_PAGE_SIZE, required = false, defaultValue = "10") int pageSize
+            @RequestParam(name = RestConstants.QUERY_PARAM_PAGE_INDEX, required = false, defaultValue = "0") int pageIndex,
+            @RequestParam(name = RestConstants.QUERY_PARAM_PAGE_SIZE, required = false, defaultValue = "10") int pageSize
     ) {
         PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("key", "validFrom"));
         Page<ScheduledConfigEntry> domainPage = scheduledConfigRepository.findAll(pageRequest);
