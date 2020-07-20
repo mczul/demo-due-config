@@ -63,6 +63,10 @@ class DefaultControllerTest {
     @ParameterizedTest
     @MethodSource("buildGetQueryArgs")
     void getQuery(int pageIndex, int pageSize, List<ScheduledConfigEntry> expectedEntries) throws Exception {
+        /*
+         TODO: Current test might be to close to actual implementation: find a way to test relevant aspects (as e.g.
+               correct interpretation of intended query and type mapping) without mirroring the implementation details
+        */
         List<ScheduledConfigDto> expectedDtos = scheduledConfigMapper.fromDomainList(expectedEntries);
         when(scheduledConfigRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(expectedEntries));
 
