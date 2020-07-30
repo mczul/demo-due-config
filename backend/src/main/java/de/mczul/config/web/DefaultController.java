@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,11 +20,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping(RestConstants.PATH_PREFIX_API)
 public class DefaultController {
-
     final ScheduledConfigRepository scheduledConfigRepository;
     final ScheduledConfigService scheduledConfigService;
     final ScheduledConfigMapper scheduledConfigMapper;
-
 
     @GetMapping
     public List<ScheduledConfigDto> getScheduledConfigs(
@@ -45,16 +44,17 @@ public class DefaultController {
     }
 
     @GetMapping(path = "{" + RestConstants.PATH_VARIABLE_KEY + "}")
-    public ResponseEntity<ScheduledConfigDto> getConfig(
+    public ResponseEntity<ConfigQueryResponse> queryByKey(
             @PathVariable(name = RestConstants.PATH_VARIABLE_KEY) String key
     ) {
-        Optional<ScheduledConfigEntry> entryOptional = scheduledConfigService
-                .get(key);
+        Optional<ScheduledConfigEntry> entryOptional = scheduledConfigService.get(key);
+        var responseBuilder = ConfigQueryResponse.builder().referenceTime(LocalDateTime.now());
         if (entryOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            responseBuilder.value(null);
+        } else {
+            responseBuilder.value(entryOptional.get().getValue());
         }
-        ScheduledConfigDto result = scheduledConfigMapper.fromDomain(entryOptional.get());
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(responseBuilder.build());
     }
 
 }
