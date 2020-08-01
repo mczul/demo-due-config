@@ -1,6 +1,8 @@
 package de.mczul.config.common;
 
-import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -15,7 +17,8 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
+@DisplayName("ScheduledConfigEntry tests")
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class ScheduledConfigEntryTest {
     private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -65,14 +68,14 @@ class ScheduledConfigEntryTest {
 
     @ParameterizedTest
     @MethodSource("buildValid")
-    void testValid(ScheduledConfigEntry sample) {
+    void valid_samples_must_not_produce_violations(ScheduledConfigEntry sample) {
         Set<ConstraintViolation<ScheduledConfigEntry>> violations = validator.validate(sample);
         assertThat(violations).isEmpty();
     }
 
     @ParameterizedTest
     @MethodSource("buildInvalid")
-    void testInvalid(ScheduledConfigEntry sample) {
+    void invalid_samples_must_produce_violations(ScheduledConfigEntry sample) {
         final Pattern acceptableMessageTemplatesPattern = Pattern.compile("^\\{Not(?:Blank|Null)\\.scheduledConfig\\..+}$");
         Set<ConstraintViolation<ScheduledConfigEntry>> violations = validator.validate(sample);
         assertThat(violations).isNotEmpty();
@@ -83,8 +86,7 @@ class ScheduledConfigEntryTest {
     }
 
     @Test
-//    @Disabled("TODO: Check for options of lombok to handle null id values properly")
-    void testEqualsHashCode() {
+    void equals_and_hash_code() {
         var referenceTimestamp = LocalDateTime.now();
         var first = ScheduledConfigEntry.builder()
                 .id(null)

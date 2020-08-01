@@ -1,8 +1,7 @@
 package de.mczul.config.common;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import de.mczul.config.TestTags;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +15,9 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
+@DisplayName("ScheduledConfigRepository tests")
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@Tag(TestTags.INTEGRATION_TEST)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class ScheduledConfigRepositoryTest {
 
@@ -32,7 +33,7 @@ class ScheduledConfigRepositoryTest {
 
     @Transactional
     @Test
-    void findOutdated() {
+    void find_outdated() {
         var entries = List.of(
                 ScheduledConfigEntry.builder()
                         .key("x")
@@ -82,7 +83,7 @@ class ScheduledConfigRepositoryTest {
 
     @Transactional
     @Test
-    void findCurrentByKey() {
+    void find_current_by_key() {
         final String KEY = "MY_KEY";
         var entries = List.of(
                 ScheduledConfigEntry.builder()

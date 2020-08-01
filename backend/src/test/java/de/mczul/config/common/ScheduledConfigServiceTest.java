@@ -1,7 +1,8 @@
 package de.mczul.config.common;
 
+import de.mczul.config.TestTags;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -10,7 +11,10 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("ScheduledConfigService tests")
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @Slf4j
+@Tag(TestTags.INTEGRATION_TEST)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class ScheduledConfigServiceTest {
 
@@ -20,13 +24,13 @@ class ScheduledConfigServiceTest {
     private ScheduledConfigService underTest;
 
     @Test
-    void notExisting() {
+    void not_existing() {
         Optional<ScheduledConfigEntry> entry = underTest.get("MY_KEY_NOT_EXISTING");
         assertThat(entry).isEmpty();
     }
 
     @Test
-    void onlyFuture() {
+    void only_future() {
         final String KEY = "MY_KEY_ONLY_FUTURE";
 
         ScheduledConfigEntry first = ScheduledConfigEntry.builder()
@@ -42,7 +46,7 @@ class ScheduledConfigServiceTest {
     }
 
     @Test
-    void previousAndCurrentAndFuture() throws InterruptedException {
+    void previous_and_current_and_future() throws InterruptedException {
         final String KEY = "MY_KEY_PREVIOUS_AND_CURRENT_AND_FUTURE";
 
         ScheduledConfigEntry previous = ScheduledConfigEntry.builder()
