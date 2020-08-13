@@ -12,12 +12,12 @@ public interface ScheduledConfigRepository extends JpaRepository<ScheduledConfig
 
     @Query("SELECT e1 " +
             "FROM ScheduledConfigEntry e1 " +
-            "WHERE e1.key = ?1 " +
+            "WHERE lower(e1.key) = lower(?1) " +
             "AND e1.validFrom <= current_timestamp " +
             "AND NOT EXISTS( " +
             "   SELECT 'x' " +
             "   FROM ScheduledConfigEntry e2 " +
-            "   WHERE e1.key = e2.key " +
+            "   WHERE lower(e1.key) = lower(e2.key) " +
             "   AND e2.validFrom <= current_timestamp " +
             "   AND e2.validFrom > e1.validFrom " +
             ")")

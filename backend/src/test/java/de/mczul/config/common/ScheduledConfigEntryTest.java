@@ -76,8 +76,8 @@ class ScheduledConfigEntryTest {
     @ParameterizedTest
     @MethodSource("buildInvalid")
     void invalid_samples_must_produce_violations(ScheduledConfigEntry sample) {
-        final Pattern acceptableMessageTemplatesPattern = Pattern.compile("^\\{Not(?:Blank|Null)\\.scheduledConfig\\..+}$");
-        Set<ConstraintViolation<ScheduledConfigEntry>> violations = validator.validate(sample);
+        final Pattern acceptableMessageTemplatesPattern = Pattern.compile("^\\{(ValidConfigKey|Not(?:Blank|Null)\\.scheduledConfig\\..+)\\.message}$");
+        final Set<ConstraintViolation<ScheduledConfigEntry>> violations = validator.validate(sample);
         assertThat(violations).isNotEmpty();
         for (ConstraintViolation<ScheduledConfigEntry> violation : violations) {
             assertThat(violation.getMessageTemplate()).matches(acceptableMessageTemplatesPattern);

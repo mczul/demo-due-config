@@ -1,5 +1,6 @@
 package de.mczul.config.common;
 
+import de.mczul.config.validation.ValidConfigKey;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,12 +28,13 @@ public class ScheduledConfigEntry {
     @Column(name = "id")
     private Integer id;
 
-    @NotNull(message = "{NotNull.scheduledConfig.key}")
-    @NotBlank(message = "{NotBlank.scheduledConfig.key}")
+    @NotNull(message = "{NotNull.scheduledConfig.key.message}")
+    @NotBlank(message = "{NotBlank.scheduledConfig.key.message}")
+    @ValidConfigKey
     @Column(name = "key")
     private String key;
 
-    @NotNull(message = "{NotNull.scheduledConfig.validFrom}")
+    @NotNull(message = "{NotNull.scheduledConfig.validFrom.message}")
     @Column(name = "valid_from")
     private LocalDateTime validFrom;
 
