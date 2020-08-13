@@ -1,4 +1,4 @@
-package de.mczul.config;
+package de.mczul.config.testing;
 
 public interface TestTags {
 

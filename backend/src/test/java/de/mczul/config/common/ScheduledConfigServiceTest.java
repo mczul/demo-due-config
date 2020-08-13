@@ -1,10 +1,12 @@
 package de.mczul.config.common;
 
-import de.mczul.config.TestTags;
+import de.mczul.config.testing.IntegrationTest;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -14,8 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("ScheduledConfigService tests")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @Slf4j
-@Tag(TestTags.INTEGRATION_TEST)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@IntegrationTest
 class ScheduledConfigServiceTest {
 
     @Autowired

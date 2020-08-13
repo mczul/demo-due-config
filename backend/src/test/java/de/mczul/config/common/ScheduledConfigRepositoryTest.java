@@ -1,9 +1,8 @@
 package de.mczul.config.common;
 
-import de.mczul.config.TestTags;
+import de.mczul.config.testing.IntegrationTest;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -17,8 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("ScheduledConfigRepository tests")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@Tag(TestTags.INTEGRATION_TEST)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@IntegrationTest
 class ScheduledConfigRepositoryTest {
 
     @Autowired
