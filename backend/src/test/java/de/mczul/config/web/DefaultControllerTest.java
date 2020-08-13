@@ -7,7 +7,11 @@ import de.mczul.config.model.ScheduledConfigEntry;
 import de.mczul.config.service.ScheduledConfigMapper;
 import de.mczul.config.service.ScheduledConfigRepository;
 import de.mczul.config.testing.IntegrationTest;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -39,9 +43,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("DefaultController tests")
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@AutoConfigureMockMvc
+@DisplayNameGeneration(ReplaceUnderscores.class)
 @IntegrationTest
+@AutoConfigureMockMvc
 class DefaultControllerTest {
     @Autowired
     private MockMvc mockMvc;

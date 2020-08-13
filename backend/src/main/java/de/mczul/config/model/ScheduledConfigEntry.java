@@ -1,10 +1,7 @@
 package de.mczul.config.model;
 
 import de.mczul.config.validation.ValidConfigKey;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,6 +11,7 @@ import java.util.Objects;
 
 @Data
 @Builder
+@With
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

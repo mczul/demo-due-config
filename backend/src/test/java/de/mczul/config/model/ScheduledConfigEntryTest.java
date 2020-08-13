@@ -2,7 +2,7 @@ package de.mczul.config.model;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,9 +18,9 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("ScheduledConfigEntry tests")
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@DisplayNameGeneration(ReplaceUnderscores.class)
 class ScheduledConfigEntryTest {
-    private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
 
     static Stream<ScheduledConfigEntry> buildValid() {
         return Stream.of(
@@ -69,7 +69,7 @@ class ScheduledConfigEntryTest {
     @ParameterizedTest
     @MethodSource("buildValid")
     void valid_samples_must_not_produce_violations(ScheduledConfigEntry sample) {
-        Set<ConstraintViolation<ScheduledConfigEntry>> violations = validator.validate(sample);
+        Set<ConstraintViolation<ScheduledConfigEntry>> violations = VALIDATOR.validate(sample);
         assertThat(violations).isEmpty();
     }
 
@@ -77,7 +77,7 @@ class ScheduledConfigEntryTest {
     @MethodSource("buildInvalid")
     void invalid_samples_must_produce_violations(ScheduledConfigEntry sample) {
         final Pattern acceptableMessageTemplatesPattern = Pattern.compile("^\\{(ValidConfigKey|Not(?:Blank|Null)\\.scheduledConfig\\..+)\\.message}$");
-        final Set<ConstraintViolation<ScheduledConfigEntry>> violations = validator.validate(sample);
+        final Set<ConstraintViolation<ScheduledConfigEntry>> violations = VALIDATOR.validate(sample);
         assertThat(violations).isNotEmpty();
         for (ConstraintViolation<ScheduledConfigEntry> violation : violations) {
             assertThat(violation.getMessageTemplate()).matches(acceptableMessageTemplatesPattern);
