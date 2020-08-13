@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ScheduledConfigEntryTest {
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
 
-    static Stream<ScheduledConfigEntry> buildValid() {
+    public static Stream<ScheduledConfigEntry> buildValid() {
         return Stream.of(
                 ScheduledConfigEntry.builder()
                         .key("MY_KEY_1")
@@ -37,7 +37,7 @@ class ScheduledConfigEntryTest {
         );
     }
 
-    static Stream<ScheduledConfigEntry> buildInvalid() {
+    public static Stream<ScheduledConfigEntry> buildInvalid() {
         return Stream.of(
                 // Key is null
                 ScheduledConfigEntry.builder()
