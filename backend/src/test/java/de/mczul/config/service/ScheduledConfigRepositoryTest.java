@@ -1,5 +1,6 @@
-package de.mczul.config.common;
+package de.mczul.config.service;
 
+import de.mczul.config.model.ScheduledConfigEntry;
 import de.mczul.config.testing.IntegrationTest;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

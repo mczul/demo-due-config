@@ -1,4 +1,4 @@
-package de.mczul.config.common;
+package de.mczul.config.model;
 
 import de.mczul.config.validation.ValidConfigKey;
 import lombok.AllArgsConstructor;

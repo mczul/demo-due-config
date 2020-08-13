@@ -1,6 +1,11 @@
 package de.mczul.config.web;
 
-import de.mczul.config.common.*;
+import de.mczul.config.model.ConfigQueryResponse;
+import de.mczul.config.model.ScheduledConfigDto;
+import de.mczul.config.model.ScheduledConfigEntry;
+import de.mczul.config.service.ScheduledConfigMapper;
+import de.mczul.config.service.ScheduledConfigRepository;
+import de.mczul.config.service.ScheduledConfigService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

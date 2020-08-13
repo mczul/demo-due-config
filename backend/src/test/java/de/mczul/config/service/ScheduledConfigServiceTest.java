@@ -1,5 +1,6 @@
-package de.mczul.config.common;
+package de.mczul.config.service;
 
+import de.mczul.config.model.ScheduledConfigEntry;
 import de.mczul.config.testing.IntegrationTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;

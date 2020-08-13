@@ -1,5 +1,6 @@
-package de.mczul.config.common;
+package de.mczul.config.service;
 
+import de.mczul.config.model.ScheduledConfigEntry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

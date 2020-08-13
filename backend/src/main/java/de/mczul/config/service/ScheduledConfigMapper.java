@@ -1,5 +1,7 @@
-package de.mczul.config.common;
+package de.mczul.config.service;
 
+import de.mczul.config.model.ScheduledConfigDto;
+import de.mczul.config.model.ScheduledConfigEntry;
 import org.mapstruct.Mapper;
 
 import java.util.List;

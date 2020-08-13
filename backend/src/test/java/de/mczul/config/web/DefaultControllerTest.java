@@ -1,7 +1,11 @@
 package de.mczul.config.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.mczul.config.common.*;
+import de.mczul.config.model.ConfigQueryResponse;
+import de.mczul.config.model.ScheduledConfigDto;
+import de.mczul.config.model.ScheduledConfigEntry;
+import de.mczul.config.service.ScheduledConfigMapper;
+import de.mczul.config.service.ScheduledConfigRepository;
 import de.mczul.config.testing.IntegrationTest;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;

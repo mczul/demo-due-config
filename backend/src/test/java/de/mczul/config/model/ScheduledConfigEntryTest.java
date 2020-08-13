@@ -1,4 +1,4 @@
-package de.mczul.config.common;
+package de.mczul.config.model;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;

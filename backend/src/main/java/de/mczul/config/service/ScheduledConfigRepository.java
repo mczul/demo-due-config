@@ -1,5 +1,6 @@
-package de.mczul.config.common;
+package de.mczul.config.service;
 
+import de.mczul.config.model.ScheduledConfigEntry;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -8,10 +8,6 @@ import java.lang.annotation.*;
 
 import static javax.validation.constraints.Pattern.Flag.CASE_INSENSITIVE;
 
-
-// TODO: Lower and uppercase conversion for keys
-// TODO: Multi-Language support for validation
-
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {})
