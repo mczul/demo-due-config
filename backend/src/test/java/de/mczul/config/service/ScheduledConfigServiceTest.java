@@ -71,11 +71,6 @@ class ScheduledConfigServiceTest {
         underTest.set(current);
         underTest.set(future);
 
-        // Debug output
-        entryRepository.findAll().stream()
-                .map(ScheduledConfigEntry::toString)
-                .forEach(LOG::info);
-
         // Current
         Optional<ScheduledConfigEntry> entry = underTest.get(KEY);
         assertThat(entry).isPresent();
