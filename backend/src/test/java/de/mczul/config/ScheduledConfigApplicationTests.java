@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class ScheduledConfigApplicationTests {
 
 	@Test
-	void context_loads() {
+	void assert_that_context_loads() {
 	}
 
 }

@@ -27,6 +27,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -69,28 +70,28 @@ class DefaultControllerTest {
     class ValueQueryTests {
 
         private void checkNullValueQueryResponse(String key) throws Exception {
-            MvcResult result = mockMvc
+            final MvcResult result = mockMvc
                     .perform(get(RestConstants.PATH_PREFIX_API + "/" + key))
                     .andExpect(status().isOk())
                     .andReturn();
 
-            byte[] content = result.getResponse().getContentAsByteArray();
-            ConfigQueryResponse response = objectMapper.readValue(content, ConfigQueryResponse.class);
+            final byte[] content = result.getResponse().getContentAsByteArray();
+            final ConfigQueryResponse response = objectMapper.readValue(content, ConfigQueryResponse.class);
 
-            assertThat(response).isNotNull();
-            assertThat(response.getReferenceTime()).isBeforeOrEqualTo(LocalDateTime.now());
-            assertThat(response.getValue()).isNull();
+            assertThat(response).as("Query response was NULL").isNotNull();
+            assertThat(response.getReferenceTime()).as("The reference timestamp of the query response is invalid").isBeforeOrEqualTo(LocalDateTime.now());
+            assertThat(response.getValue()).as("The query response a value other than NULL").isNull();
         }
 
         @Test
-        void query_by_key_with_key_not_existing() throws Exception {
+        void handle_query_by_key_with_key_not_existing() throws Exception {
             final String key = "NOT_EXISTING";
             when(scheduledConfigRepository.findCurrentByKey(key)).thenReturn(Optional.empty());
             checkNullValueQueryResponse(key);
         }
 
         @Test
-        void query_by_key_with_null_value_entry() throws Exception {
+        void handle_query_by_key_with_null_value_entry() throws Exception {
             final String key = "KEY_WITH_NULL_VALUE";
             when(scheduledConfigRepository.findCurrentByKey(key)).thenReturn(
                     Optional.of(ScheduledConfigEntry.builder()
@@ -114,10 +115,10 @@ class DefaultControllerTest {
          TODO: Current test might be to close to actual implementation: find a way to test relevant aspects (as e.g.
                correct interpretation of intended query and type mapping) without mirroring the implementation details
         */
-            List<ScheduledConfigDto> expectedDtos = scheduledConfigMapper.fromDomainList(expectedEntries);
+            final List<ScheduledConfigDto> expectedDtos = scheduledConfigMapper.fromDomainList(expectedEntries);
             when(scheduledConfigRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(expectedEntries));
 
-            MvcResult result = mockMvc
+            final MvcResult result = mockMvc
                     .perform(
                             get(RestConstants.PATH_PREFIX_API)
                                     .param(RestConstants.QUERY_PARAM_PAGE_INDEX, String.valueOf(pageIndex))
@@ -127,14 +128,13 @@ class DefaultControllerTest {
                     .andReturn();
 
             verify(scheduledConfigRepository).findAll(PageRequest.of(pageIndex, pageSize, Sort.by("key", "validFrom")));
-            byte[] content = result.getResponse().getContentAsByteArray();
-            ScheduledConfigDto[] dtoArray = objectMapper.readValue(content, ScheduledConfigDto[].class);
+            final byte[] content = result.getResponse().getContentAsByteArray();
+            final ScheduledConfigDto[] dtoArray = objectMapper.readValue(content, ScheduledConfigDto[].class);
 
-            assertThat(dtoArray).hasSizeLessThanOrEqualTo(pageSize);
-            assertThat(dtoArray).containsExactlyInAnyOrder(expectedDtos.toArray(ScheduledConfigDto[]::new));
+            assertThat(dtoArray).as("More records returned than page size suggests").hasSizeLessThanOrEqualTo(pageSize);
+            assertThat(dtoArray).as("Returned records did not match expected list").containsExactlyInAnyOrder(expectedDtos.toArray(ScheduledConfigDto[]::new));
         }
 
-        @Disabled("Saving an entry does not return the saved instance; further research needed")
         @Test
         void must_save_valid_samples() throws Exception {
             final ScheduledConfigDto sample = ScheduledConfigDto.builder()
@@ -142,7 +142,9 @@ class DefaultControllerTest {
                     .validFrom(LocalDateTime.now().minusMinutes(1))
                     .value("BAR")
                     .build();
+            final ScheduledConfigEntry expectedEntry = scheduledConfigMapper.toDomain(sample.withId(42));
 
+            when(scheduledConfigRepository.save(any(ScheduledConfigEntry.class))).thenReturn(expectedEntry);
             final byte[] content = objectMapper.writeValueAsBytes(sample);
             final MvcResult result = mockMvc.perform(
                     post(RestConstants.PATH_PREFIX_API)
@@ -153,22 +155,27 @@ class DefaultControllerTest {
                     .andReturn();
 
             final String responseContent = result.getResponse().getContentAsString();
-            result.getResponse();
-            assertThat(responseContent).isNotBlank();
+            assertThat(responseContent).as("Saving valid sample must return some content").isNotBlank();
 
             final ScheduledConfigDto actual = objectMapper.readValue(responseContent, ScheduledConfigDto.class);
-            assertThat(actual.getId()).isNotNull();
-            assertThat(actual.getKey()).isEqualTo(sample.getKey());
-            assertThat(actual.getValidFrom()).isEqualTo(sample.getValidFrom());
-            assertThat(actual.getValue()).isEqualTo(sample.getValue());
+            assertAll(
+                    () -> assertThat(actual.getId()).as("Entry must have a non null id after it has been saved").isNotNull(),
+                    () -> assertThat(actual.getKey()).as("Entry key must be unmodified after save operation").isEqualTo(sample.getKey()),
+                    () -> assertThat(actual.getValidFrom()).as("Entry valid from timestamp must be unmodified after save operation").isEqualTo(sample.getValidFrom()),
+                    () -> assertThat(actual.getValue()).as("Entry value must be unmodified after save operation").isEqualTo(sample.getValue())
+            );
         }
 
         @Test
         void must_handle_invalid_samples_properly() throws Exception {
-            ScheduledConfigDto sample = ScheduledConfigDto.builder().key("").validFrom(LocalDateTime.now()).value(null).build();
+            final ScheduledConfigDto sample = ScheduledConfigDto.builder()
+                    .key("")
+                    .validFrom(LocalDateTime.now())
+                    .value(null)
+                    .build();
 
-            byte[] content = objectMapper.writeValueAsBytes(sample);
-            MvcResult result = mockMvc.perform(
+            final byte[] content = objectMapper.writeValueAsBytes(sample);
+            final MvcResult result = mockMvc.perform(
                     post(RestConstants.PATH_PREFIX_API)
                             .contentType(MediaType.APPLICATION_JSON_VALUE)
                             .content(content)
@@ -177,7 +184,7 @@ class DefaultControllerTest {
                     .andExpect(header().string("Content-Type", MediaType.TEXT_PLAIN_VALUE))
                     .andReturn();
 
-            assertThat(result.getResponse().getContentAsString()).isNotBlank();
+            assertThat(result.getResponse().getContentAsString()).as("No content returned after posting invalid config dto").isNotBlank();
         }
 
     }
