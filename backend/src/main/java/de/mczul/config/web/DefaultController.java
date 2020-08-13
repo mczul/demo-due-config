@@ -54,7 +54,7 @@ public class DefaultController {
             @PathVariable(name = RestConstants.PATH_VARIABLE_KEY) String key
     ) {
         Optional<ScheduledConfigEntry> entryOptional = scheduledConfigService.get(key);
-        var queryResponse = ConfigQueryResponse.builder().referenceTime(LocalDateTime.now()).build();
+        var queryResponse = ConfigQueryResponse.builder().key(key).referenceTime(LocalDateTime.now()).build();
         if (entryOptional.isEmpty()) {
             queryResponse.setValue(null);
         } else {
