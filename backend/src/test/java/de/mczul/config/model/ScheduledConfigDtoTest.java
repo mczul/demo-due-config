@@ -1,12 +1,12 @@
 package de.mczul.config.model;
 
 import de.mczul.config.service.ScheduledConfigMapper;
-import de.mczul.config.service.ScheduledConfigMapperImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mapstruct.factory.Mappers;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -23,7 +23,7 @@ class ScheduledConfigDtoTest {
 
     // TODO: Test validation without duplicating code
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
-    private static final ScheduledConfigMapper MAPPER = new ScheduledConfigMapperImpl();
+    private static final ScheduledConfigMapper MAPPER = Mappers.getMapper(ScheduledConfigMapper.class);
 
     static Stream<ScheduledConfigDto> buildValid() {
         return ScheduledConfigEntryTest.buildValid().map(MAPPER::fromDomain);

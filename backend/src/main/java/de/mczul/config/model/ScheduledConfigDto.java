@@ -12,16 +12,22 @@ import java.time.LocalDateTime;
 @With
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScheduledConfigDto {
+public class ScheduledConfigDto implements ScheduledConfig {
 
     private Integer id;
-    @NotNull(message = "{NotNull.scheduledConfig.key.message}")
-    @NotBlank(message = "{NotBlank.scheduledConfig.key.message}")
-    @ValidConfigKey
     private String key;
-    @NotNull(message = "{NotNull.scheduledConfig.validFrom.message}")
     private LocalDateTime validFrom;
     private String value;
+
+    @Override
+    public boolean equals(Object other) {
+        return isEqual(other);
+    }
+
+    @Override
+    public int hashCode() {
+        return calcHashCode();
+    }
 
 }
 

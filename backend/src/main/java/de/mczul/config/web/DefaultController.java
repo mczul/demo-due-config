@@ -46,6 +46,7 @@ public class DefaultController {
         ScheduledConfigEntry submittedEntry = scheduledConfigMapper.toDomain(dto);
         ScheduledConfigEntry savedEntry = scheduledConfigService.set(submittedEntry);
         ScheduledConfigDto result = scheduledConfigMapper.fromDomain(savedEntry);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
@@ -60,6 +61,7 @@ public class DefaultController {
         } else {
             queryResponse.setValue(entryOptional.get().getValue());
         }
+
         return ResponseEntity.ok(queryResponse);
     }
 

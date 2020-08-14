@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Data
 @Builder
@@ -16,7 +15,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "scheduled_config", schema = ScheduledConfigEntry.SCHEMA_NAME)
-public class ScheduledConfigEntry {
+public class ScheduledConfigEntry implements ScheduledConfig {
     public static final String SEQ_NAME = "seq_scheduled_config";
     public static final String SCHEMA_NAME = "config";
 
@@ -26,13 +25,9 @@ public class ScheduledConfigEntry {
     @Column(name = "id")
     private Integer id;
 
-    @NotNull(message = "{NotNull.scheduledConfig.key.message}")
-    @NotBlank(message = "{NotBlank.scheduledConfig.key.message}")
-    @ValidConfigKey
     @Column(name = "key")
     private String key;
 
-    @NotNull(message = "{NotNull.scheduledConfig.validFrom.message}")
     @Column(name = "valid_from")
     private LocalDateTime validFrom;
 
@@ -40,24 +35,13 @@ public class ScheduledConfigEntry {
     private String value;
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        ScheduledConfigEntry that = (ScheduledConfigEntry) o;
-        if (id == null) {
-            return false;
-        }
-
-        return Objects.equals(id, that.id);
+    public boolean equals(Object other) {
+        return isEqual(other);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return calcHashCode();
     }
+
 }

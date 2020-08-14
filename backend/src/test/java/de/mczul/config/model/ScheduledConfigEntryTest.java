@@ -69,7 +69,7 @@ class ScheduledConfigEntryTest {
     @ParameterizedTest
     @MethodSource("buildValid")
     void valid_samples_must_not_produce_violations(ScheduledConfigEntry sample) {
-        Set<ConstraintViolation<ScheduledConfigEntry>> violations = VALIDATOR.validate(sample);
+        final Set<ConstraintViolation<ScheduledConfigEntry>> violations = VALIDATOR.validate(sample);
         assertThat(violations).isEmpty();
     }
 
@@ -87,26 +87,37 @@ class ScheduledConfigEntryTest {
 
     @Test
     void equals_and_hash_code() {
-        var referenceTimestamp = LocalDateTime.now();
-        var first = ScheduledConfigEntry.builder()
+        final var id = 42;
+        final var key = "MY_KEY";
+        final var validFrom = LocalDateTime.now();
+        final var value = "MY_VALUE";
+
+        final var first = ScheduledConfigEntry.builder()
                 .id(null)
-                .key("MY_KEY_1")
-                .validFrom(referenceTimestamp)
-                .value("MY_VALUE_1")
+                .key(key)
+                .validFrom(validFrom)
+                .value(value)
                 .build();
-        var second = ScheduledConfigEntry.builder()
+        final var second = ScheduledConfigEntry.builder()
                 .id(null)
-                .key("MY_KEY_1")
-                .validFrom(referenceTimestamp)
-                .value("MY_VALUE_1")
+                .key(key)
+                .validFrom(validFrom)
+                .value(value)
                 .build();
+
         // Entities are only equal if their id is equal
         assertThat(first).isNotEqualTo(second);
 
-        first.setId(42);
-        second.setId(42);
+        first.setId(id);
+        second.setId(null);
+        assertThat(first).isNotEqualTo(second);
+
+        // Set same id on both instances
+        first.setId(id);
+        second.setId(id);
         assertThat(first).isEqualTo(second);
 
+        // Changing the key must not make any equality difference
         second.setKey(second.getKey() + "_NEW");
         assertThat(first).isEqualTo(second);
     }

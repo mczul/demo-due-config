@@ -81,7 +81,7 @@ class ScheduledConfigRepositoryTest {
         var actualEntries = underTest.findOutdated();
 
         assertThat(actualEntries).hasSize(expectedEntries.size());
-        assertThat(actualEntries).containsExactlyInAnyOrder(expectedEntries.toArray(new ScheduledConfigEntry[0]));
+        assertThat(actualEntries).containsExactlyInAnyOrder(expectedEntries.toArray(ScheduledConfigEntry[]::new));
     }
 
     @Transactional

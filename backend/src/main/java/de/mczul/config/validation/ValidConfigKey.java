@@ -12,7 +12,7 @@ import static javax.validation.constraints.Pattern.Flag.CASE_INSENSITIVE;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
-@Pattern(regexp = "[a-z][a-z0-9_-]{0,254}", flags = CASE_INSENSITIVE)
+@Pattern(regexp = "[a-z](?:[a-z0-9._-]{0,253}(?<=[a-z0-9]))", flags = CASE_INSENSITIVE)
 @ReportAsSingleViolation
 public @interface ValidConfigKey {
     String message() default "{ValidConfigKey.message}";
