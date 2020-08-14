@@ -7,11 +7,13 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @DisplayName("ScheduledConfigService tests")
 @DisplayNameGeneration(ReplaceUnderscores.class)
@@ -83,6 +85,27 @@ class ScheduledConfigServiceTest {
         entry = underTest.get(KEY);
         assertThat(entry).isPresent();
         assertThat(entry.get().getValue()).isEqualTo("3");
+    }
+
+    @Test
+    void handle_unique_constraint_violations_properly() {
+        final String KEY = "MY_KEY_UNIQUE_CONSTRAINT_VIOLATION";
+
+        final ScheduledConfigEntry sample = ScheduledConfigEntry.builder()
+                .key(KEY)
+                .validFrom(LocalDateTime.now().minusMinutes(5))
+                .value("1")
+                .build();
+        final ScheduledConfigEntry redundant = ScheduledConfigEntry.builder()
+                .key(sample.getKey())
+                .validFrom(sample.getValidFrom())
+                .value(sample.getValue())
+                .build();
+
+        underTest.set(sample);
+        assertThatExceptionOfType(DataIntegrityViolationException.class).isThrownBy(
+                () -> underTest.set(redundant)
+        );
     }
 
 }
