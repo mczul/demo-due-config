@@ -9,10 +9,18 @@ import java.util.Objects;
 
 public interface ScheduledConfig {
 
+    /**
+     * TODO: Missing implemenation
+     * @return
+     */
     Integer getId();
 
     void setId(Integer id);
 
+    /**
+     * TODO: Missing implemenation
+     * @return
+     */
     @NotNull(message = "{NotNull.scheduledConfig.key.message}")
     @NotBlank(message = "{NotBlank.scheduledConfig.key.message}")
     @ValidConfigKey
@@ -20,15 +28,27 @@ public interface ScheduledConfig {
 
     void setKey(String value);
 
+    /**
+     * TODO: Missing implemenation
+     * @return
+     */
     @NotNull(message = "{NotNull.scheduledConfig.validFrom.message}")
     LocalDateTime getValidFrom();
 
     void setValidFrom(LocalDateTime validFrom);
 
+    /**
+     * TODO: Missing implemenation
+     * @return
+     */
     String getValue();
 
     void setValue(String value);
 
+    /**
+     * TODO: Missing implemenation
+     * @return
+     */
     default boolean isEqual(Object other) {
         if (this == other) {
             return true;
@@ -45,6 +65,10 @@ public interface ScheduledConfig {
         return Objects.equals(getId(), that.getId());
     }
 
+    /**
+     * TODO: Missing implemenation
+     * @return
+     */
     default int calcHashCode() {
         return Objects.hashCode(getId());
     }
