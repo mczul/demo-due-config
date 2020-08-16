@@ -7,6 +7,29 @@
 * a configuration entry consists of a configuration key value pair with all of its meta data
 * if no configuration entry could be found, a null value will be returned as the configuration value
 
+# Usage
+
+## Maven
+
+```shell
+# Cleanup
+./mvnw clean
+
+# Run unit tests
+./mvnw test
+
+# Run integration tests
+./mvnw failsafe:integration-test
+
+# Default
+./mvnw verify
+```
+
+## Docker
+
+TODO: Documentation missing
+
 # TODOs
 
 * Find a way to register integration tests annotated with @IntegrationTest with surefire (exclusion) / failsafe (inclusion)
+* Improve documentation
