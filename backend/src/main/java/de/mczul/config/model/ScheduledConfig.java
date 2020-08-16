@@ -4,6 +4,7 @@ import de.mczul.config.validation.ValidConfigKey;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -13,6 +14,7 @@ public interface ScheduledConfig {
      * TODO: Missing implemenation
      * @return
      */
+    @Positive(message = "{Positive.scheduledConfig.id.message}")
     Integer getId();
 
     void setId(Integer id);
