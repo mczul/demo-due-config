@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 @DisplayName("Spring Boot initialization tests")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @IntegrationTest
-class ScheduledConfigApplicationTests {
+class ScheduledConfigApplicationIT {
 
     @Test
     void assert_that_context_loads() {

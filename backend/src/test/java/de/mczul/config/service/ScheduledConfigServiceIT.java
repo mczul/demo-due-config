@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @DisplayName("ScheduledConfigService tests")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @IntegrationTest
-class ScheduledConfigServiceTest {
+class ScheduledConfigServiceIT {
 
     @Autowired
     private ScheduledConfigRepository entryRepository;

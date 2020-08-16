@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @IntegrationTest
 @AutoConfigureMockMvc
-class DefaultControllerTest {
+class DefaultControllerIT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -112,7 +112,7 @@ class DefaultControllerTest {
     class EntryTests {
 
         @ParameterizedTest
-        @MethodSource("de.mczul.config.web.DefaultControllerTest#buildGetScheduledConfigsArgs")
+        @MethodSource("de.mczul.config.web.DefaultControllerIT#buildGetScheduledConfigsArgs")
         void must_translate_query_spec_to_repository_params(int pageIndex, int pageSize, List<ScheduledConfigEntry> expectedEntries) throws Exception {
         /*
          TODO: Current test might be to close to actual implementation: find a way to test relevant aspects (as e.g.

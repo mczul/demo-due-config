@@ -7,3 +7,6 @@
 * a configuration entry consists of a configuration key value pair with all of its meta data
 * if no configuration entry could be found, a null value will be returned as the configuration value
 
+# TODOs
+
+* Find a way to register integration tests annotated with @IntegrationTest with surefire (exclusion) / failsafe (inclusion)

@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("ScheduledConfigRepository tests")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @IntegrationTest
-class ScheduledConfigRepositoryTest {
+class ScheduledConfigRepositoryIT {
 
     @Autowired
     private ScheduledConfigRepository underTest;
