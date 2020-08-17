@@ -13,6 +13,7 @@
             <column name="key" type="VARCHAR(255)"/>
             <column name="valid_from" type="TIMESTAMP"/>
             <column name="value" type="TEXT"/>
+            <column name="comment" type="TEXT"/>
         </createTable>
         <addNotNullConstraint schemaName="config" tableName="scheduled_config" columnName="id"/>
         <addNotNullConstraint schemaName="config" tableName="scheduled_config" columnName="key"/>

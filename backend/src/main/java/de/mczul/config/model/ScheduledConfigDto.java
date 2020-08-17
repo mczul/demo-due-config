@@ -1,11 +1,14 @@
 package de.mczul.config.model;
 
-import de.mczul.config.validation.ValidConfigKey;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
+
+/**
+ * TODO: Need refactoring in order to reflect different requirements for in- and outbound communication
+ */
 
 @Data
 @Builder
@@ -18,6 +21,10 @@ public class ScheduledConfigDto implements ScheduledConfig {
     private String key;
     private LocalDateTime validFrom;
     private String value;
+    private String comment;
+    @NotBlank(message = "{NotBlank.ScheduledConfigDto.author.message}")
+    private String author;
+    private List<@NotBlank(message = "{NotNull.ScheduledConfigDto.commentHistoryEntry.message}") String> commentHistory;
 
     @Override
     public boolean equals(Object other) {

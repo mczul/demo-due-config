@@ -26,11 +26,13 @@ class ScheduledConfigDtoTest {
     private static final ScheduledConfigMapper MAPPER = Mappers.getMapper(ScheduledConfigMapper.class);
 
     static Stream<ScheduledConfigDto> buildValid() {
-        return ScheduledConfigEntryTest.buildValid().map(MAPPER::fromDomain);
+        // TODO: Workaround to set mandatory field that only exists on DTO currently
+        return ScheduledConfigEntryTest.buildValid().map(MAPPER::fromDomain).peek((dto) -> dto.setAuthor("john.doe"));
     }
 
     public static Stream<ScheduledConfigDto> buildInvalid() {
-        return ScheduledConfigEntryTest.buildInvalid().map(MAPPER::fromDomain);
+        // TODO: Workaround to set mandatory field that only exists on DTO currently
+        return ScheduledConfigEntryTest.buildInvalid().map(MAPPER::fromDomain).peek((dto) -> dto.setAuthor("john.doe"));
     }
 
     @ParameterizedTest
@@ -43,7 +45,7 @@ class ScheduledConfigDtoTest {
     @ParameterizedTest
     @MethodSource("buildInvalid")
     void invalid_samples_must_produce_violations(ScheduledConfigDto sample) {
-        final Pattern acceptableMessageTemplatesPattern = Pattern.compile("^\\{(ValidConfigKey|Not(?:Blank|Null)\\.scheduledConfig\\..+)\\.message}$");
+        final Pattern acceptableMessageTemplatesPattern = Pattern.compile("^\\{(ValidConfigKey|(?:Not(?:Blank|Null)|Positive|NullOrNotBlank)\\.scheduledConfig\\..+)\\.message}$");
         final Set<ConstraintViolation<ScheduledConfigDto>> violations = VALIDATOR.validate(sample);
         assertThat(violations).isNotEmpty();
         for (ConstraintViolation<ScheduledConfigDto> violation : violations) {

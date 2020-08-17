@@ -1,5 +1,6 @@
 package de.mczul.config.model;
 
+import de.mczul.config.validation.NullOrNotBlank;
 import de.mczul.config.validation.ValidConfigKey;
 
 import javax.validation.constraints.NotBlank;
@@ -11,7 +12,8 @@ import java.util.Objects;
 public interface ScheduledConfig {
 
     /**
-     * TODO: Missing implemenation
+     * TODO: Missing
+     *
      * @return
      */
     @Positive(message = "{Positive.scheduledConfig.id.message}")
@@ -20,10 +22,10 @@ public interface ScheduledConfig {
     void setId(Integer id);
 
     /**
-     * TODO: Missing implemenation
+     * TODO: Missing
+     *
      * @return
      */
-    @NotNull(message = "{NotNull.scheduledConfig.key.message}")
     @NotBlank(message = "{NotBlank.scheduledConfig.key.message}")
     @ValidConfigKey
     String getKey();
@@ -31,7 +33,8 @@ public interface ScheduledConfig {
     void setKey(String value);
 
     /**
-     * TODO: Missing implemenation
+     * TODO: Missing
+     *
      * @return
      */
     @NotNull(message = "{NotNull.scheduledConfig.validFrom.message}")
@@ -40,7 +43,8 @@ public interface ScheduledConfig {
     void setValidFrom(LocalDateTime validFrom);
 
     /**
-     * TODO: Missing implemenation
+     * TODO: Missing
+     *
      * @return
      */
     String getValue();
@@ -48,7 +52,18 @@ public interface ScheduledConfig {
     void setValue(String value);
 
     /**
-     * TODO: Missing implemenation
+     * TODO: Missing
+     *
+     * @return
+     */
+    @NullOrNotBlank(message = "{NullOrNotBlank.scheduledConfig.comment.message}")
+    String getComment();
+
+    void setComment(String value);
+
+    /**
+     * TODO: Missing
+     *
      * @return
      */
     default boolean isEqual(Object other) {
@@ -68,7 +83,8 @@ public interface ScheduledConfig {
     }
 
     /**
-     * TODO: Missing implemenation
+     * TODO: Missing
+     *
      * @return
      */
     default int calcHashCode() {

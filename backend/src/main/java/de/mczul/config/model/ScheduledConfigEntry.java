@@ -1,11 +1,8 @@
 package de.mczul.config.model;
 
-import de.mczul.config.validation.ValidConfigKey;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -33,6 +30,9 @@ public class ScheduledConfigEntry implements ScheduledConfig {
 
     @Column(name = "value")
     private String value;
+
+    @Column(name = "comment")
+    private String comment;
 
     @Override
     public boolean equals(Object other) {

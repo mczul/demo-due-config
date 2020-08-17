@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -118,7 +119,7 @@ class DefaultControllerIT {
          TODO: Current test might be to close to actual implementation: find a way to test relevant aspects (as e.g.
                correct interpretation of intended query and type mapping) without mirroring the implementation details
         */
-            final List<ScheduledConfigDto> expectedDtos = scheduledConfigMapper.fromDomainList(expectedEntries);
+            final List<ScheduledConfigDto> expectedDtos = expectedEntries.stream().map(scheduledConfigMapper::fromDomain).collect(Collectors.toUnmodifiableList()); //scheduledConfigMapper.fromDomainList(expectedEntries);
             when(scheduledConfigRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(expectedEntries));
 
             final MvcResult result = mockMvc
@@ -144,6 +145,7 @@ class DefaultControllerIT {
                     .key("FOO")
                     .validFrom(LocalDateTime.now().minusMinutes(1))
                     .value("BAR")
+                    .author("john.doe")
                     .build();
             final ScheduledConfigEntry expectedEntry = scheduledConfigMapper.toDomain(sample.withId(42));
 

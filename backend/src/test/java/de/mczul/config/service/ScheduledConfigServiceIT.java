@@ -39,6 +39,7 @@ class ScheduledConfigServiceIT {
                 .key(KEY)
                 .validFrom(LocalDateTime.now().plusMinutes(5))
                 .value("1")
+                .comment(null)
                 .build();
 
         underTest.set(first);

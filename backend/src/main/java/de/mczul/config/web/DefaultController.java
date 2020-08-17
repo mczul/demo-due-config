@@ -19,6 +19,7 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class DefaultController {
         PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("key", "validFrom"));
         Page<ScheduledConfigEntry> domainPage = scheduledConfigRepository.findAll(pageRequest);
 
-        return scheduledConfigMapper.fromDomainList(domainPage.toList());
+        return domainPage.stream().map(scheduledConfigMapper::fromDomain).collect(Collectors.toUnmodifiableList());
     }
 
     @PostMapping

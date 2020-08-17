@@ -2,19 +2,21 @@ package de.mczul.config.service;
 
 import de.mczul.config.model.ScheduledConfigDto;
 import de.mczul.config.model.ScheduledConfigEntry;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
-
-import java.util.List;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 @Mapper
 public interface ScheduledConfigMapper {
 
+    @Mappings({
+            @Mapping(target = "author", ignore = true),
+            @Mapping(target = "commentHistory", ignore = true)
+    })
     ScheduledConfigDto fromDomain(ScheduledConfigEntry domain);
 
-    List<ScheduledConfigDto> fromDomainList(List<ScheduledConfigEntry> domainList);
-
+    @InheritInverseConfiguration
     ScheduledConfigEntry toDomain(ScheduledConfigDto dto);
-
-    List<ScheduledConfigEntry> toDomainList(List<ScheduledConfigDto> dto);
 
 }
