@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
@@ -25,7 +27,7 @@ class ScheduledConfigServiceTest {
     private ScheduledConfigService underTest;
 
     @Test
-    void set_must_convert_keys_to_lowercase() {
+    void set_must_convert_keys_to_lowercase_and_set_created_timestamp() {
         final var key = "MY_UPPERCASE_KEY";
         final var sample = ScheduledConfigEntry.builder()
                 .key(key)
@@ -34,7 +36,12 @@ class ScheduledConfigServiceTest {
 
         underTest.set(sample);
         verify(scheduledConfigRepository).save(argCaptor.capture());
-        assertThat(argCaptor.getValue().getKey()).as("Service does not convert keys to lowercase when saving.").isLowerCase();
+        assertThat(argCaptor.getValue().getKey())
+                .as("Service does not convert keys to lowercase when saving.")
+                .isLowerCase();
+        assertThat(argCaptor.getValue().getCreated())
+                .as("Service does not set current timestamp for created attribute when saving.")
+                .isBetween(LocalDateTime.now().minusSeconds(1), LocalDateTime.now());
     }
 
     @Disabled("Not yet implemented")
