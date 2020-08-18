@@ -102,6 +102,7 @@ class DefaultControllerIT {
                             .key(key)
                             .validFrom(LocalDateTime.now().minusDays(1))
                             .value(null)
+                            .created(LocalDateTime.now())
                             .build())
             );
             checkNullValueQueryResponse(key);

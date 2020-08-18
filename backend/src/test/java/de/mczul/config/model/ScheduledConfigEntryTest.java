@@ -48,6 +48,7 @@ class ScheduledConfigEntryTest {
                         .key(null)
                         .validFrom(LocalDateTime.now())
                         .value("MY_VALUE_1")
+                        .created(LocalDateTime.now())
                         .comment(null)
                         .build(),
                 // Key is blank
@@ -55,6 +56,7 @@ class ScheduledConfigEntryTest {
                         .key("")
                         .validFrom(LocalDateTime.now())
                         .value("MY_VALUE_1")
+                        .created(LocalDateTime.now())
                         .comment(null)
                         .build(),
                 // Key contains only whitespaces
@@ -62,6 +64,7 @@ class ScheduledConfigEntryTest {
                         .key(" ")
                         .validFrom(LocalDateTime.now())
                         .value("MY_VALUE_1")
+                        .created(LocalDateTime.now())
                         .comment(null)
                         .build(),
                 // ValidFrom is null
@@ -69,6 +72,7 @@ class ScheduledConfigEntryTest {
                         .key("MY_KEY")
                         .validFrom(null)
                         .value("MY_VALUE_2")
+                        .created(LocalDateTime.now())
                         .comment(null)
                         .build(),
                 // Negative id
@@ -77,6 +81,7 @@ class ScheduledConfigEntryTest {
                         .key("MY_KEY")
                         .validFrom(LocalDateTime.now())
                         .value("MY_VALUE_2")
+                        .created(LocalDateTime.now())
                         .comment(null)
                         .build(),
                 // Blank comment
@@ -84,7 +89,16 @@ class ScheduledConfigEntryTest {
                         .key("MY_KEY")
                         .validFrom(LocalDateTime.now())
                         .value("MY_VALUE_2")
+                        .created(LocalDateTime.now())
                         .comment(" ")
+                        .build(),
+                // Created in future
+                ScheduledConfigEntry.builder()
+                        .key("MY_KEY")
+                        .validFrom(LocalDateTime.now())
+                        .value("MY_VALUE_3")
+                        .created(LocalDateTime.now().plusMinutes(1))
+                        .comment(null)
                         .build()
         );
     }
@@ -99,7 +113,7 @@ class ScheduledConfigEntryTest {
     @ParameterizedTest
     @MethodSource("buildInvalid")
     void invalid_samples_must_produce_violations(ScheduledConfigEntry sample) {
-        final Pattern acceptableMessageTemplatesPattern = Pattern.compile("^\\{(?:ValidConfigKey|(?:Not(?:Blank|Null)|Positive|NullOrNotBlank)\\.scheduledConfig\\..+)\\.message}$");
+        final Pattern acceptableMessageTemplatesPattern = Pattern.compile("^\\{(?:ValidConfigKey|(?:Not(?:Blank|Null)|Positive|NullOrNotBlank|PastOrPresent)\\.scheduledConfig\\..+)\\.message}$");
         final Set<ConstraintViolation<ScheduledConfigEntry>> violations = VALIDATOR.validate(sample);
         assertThat(violations).isNotEmpty();
         for (ConstraintViolation<ScheduledConfigEntry> violation : violations) {

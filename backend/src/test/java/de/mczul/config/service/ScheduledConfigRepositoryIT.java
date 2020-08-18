@@ -121,7 +121,7 @@ class ScheduledConfigRepositoryIT {
                         .build()
         );
 
-        underTest.saveAll(entries)
+        underTest.saveAll(entries);
 
         ScheduledConfigEntry expectedValue = entries.stream()
                 .filter(e -> Objects.equals(e.getKey(), KEY))

@@ -45,7 +45,7 @@ class ScheduledConfigDtoTest {
     @ParameterizedTest
     @MethodSource("buildInvalid")
     void invalid_samples_must_produce_violations(ScheduledConfigDto sample) {
-        final Pattern acceptableMessageTemplatesPattern = Pattern.compile("^\\{(ValidConfigKey|(?:Not(?:Blank|Null)|Positive|NullOrNotBlank)\\.scheduledConfig\\..+)\\.message}$");
+        final Pattern acceptableMessageTemplatesPattern = Pattern.compile("^\\{(ValidConfigKey|(?:Not(?:Blank|Null)|Positive|NullOrNotBlank|PastOrPresent)\\.scheduledConfig\\..+)\\.message}$");
         final Set<ConstraintViolation<ScheduledConfigDto>> violations = VALIDATOR.validate(sample);
         assertThat(violations).isNotEmpty();
         for (ConstraintViolation<ScheduledConfigDto> violation : violations) {
