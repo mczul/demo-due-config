@@ -31,9 +31,13 @@ public class ScheduledConfigEntry implements ScheduledConfig {
     @Column(name = "value")
     private String value;
 
+    @Column(name = "created")
+    private LocalDateTime created;
+
     @Column(name = "comment")
     private String comment;
 
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object other) {
         return isEqual(other);

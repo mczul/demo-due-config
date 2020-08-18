@@ -39,6 +39,7 @@ class ScheduledConfigServiceIT {
                 .key(KEY)
                 .validFrom(LocalDateTime.now().plusMinutes(5))
                 .value("1")
+                .created(LocalDateTime.now())
                 .comment(null)
                 .build();
 
@@ -56,18 +57,21 @@ class ScheduledConfigServiceIT {
                 .key(KEY)
                 .validFrom(LocalDateTime.now().minusMinutes(5))
                 .value("1")
+                .created(LocalDateTime.now().minusHours(1))
                 .build();
 
         ScheduledConfigEntry current = ScheduledConfigEntry.builder()
                 .key(KEY)
                 .validFrom(LocalDateTime.now().minusSeconds(1))
                 .value("2")
+                .created(LocalDateTime.now().minusMinutes(1))
                 .build();
 
         ScheduledConfigEntry future = ScheduledConfigEntry.builder()
                 .key(KEY)
                 .validFrom(LocalDateTime.now().plusSeconds(1))
                 .value("3")
+                .created(LocalDateTime.now().minusSeconds(1))
                 .build();
 
         underTest.set(previous);
@@ -96,11 +100,13 @@ class ScheduledConfigServiceIT {
                 .key(KEY)
                 .validFrom(LocalDateTime.now().minusMinutes(5))
                 .value("1")
+                .created(LocalDateTime.now().minusMinutes(1))
                 .build();
         final ScheduledConfigEntry redundant = ScheduledConfigEntry.builder()
                 .key(sample.getKey())
                 .validFrom(sample.getValidFrom())
                 .value(sample.getValue())
+                .created(sample.getCreated())
                 .build();
 
         underTest.set(sample);

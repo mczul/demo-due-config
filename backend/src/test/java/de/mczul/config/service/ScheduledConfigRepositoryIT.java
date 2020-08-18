@@ -42,31 +42,37 @@ class ScheduledConfigRepositoryIT {
                         .key("x")
                         .validFrom(LocalDateTime.now().minusDays(1))
                         .value("1")
+                        .created(LocalDateTime.now())
                         .build(),
                 ScheduledConfigEntry.builder()
                         .key("y")
                         .validFrom(LocalDateTime.now().minusHours(12))
                         .value("2")
+                        .created(LocalDateTime.now())
                         .build(),
                 ScheduledConfigEntry.builder()
                         .key("x")
                         .validFrom(LocalDateTime.now().minusHours(10))
                         .value("3")
+                        .created(LocalDateTime.now())
                         .build(),
                 ScheduledConfigEntry.builder()
                         .key("x")
                         .validFrom(LocalDateTime.now().minusMinutes(30))
                         .value("4")
+                        .created(LocalDateTime.now())
                         .build(),
                 ScheduledConfigEntry.builder()
                         .key("y")
                         .validFrom(LocalDateTime.now().minusMinutes(15))
                         .value("5")
+                        .created(LocalDateTime.now())
                         .build(),
                 ScheduledConfigEntry.builder()
                         .key("x")
                         .validFrom(LocalDateTime.now().plusDays(1))
                         .value("6")
+                        .created(LocalDateTime.now())
                         .build()
         );
 
@@ -80,7 +86,7 @@ class ScheduledConfigRepositoryIT {
                 .collect(Collectors.toUnmodifiableList());
         var actualEntries = underTest.findOutdated();
 
-        assertThat(actualEntries).hasSize(expectedEntries.size());
+        assertThat(actualEntries).hasSameSizeAs(expectedEntries);
         assertThat(actualEntries).containsExactlyInAnyOrder(expectedEntries.toArray(ScheduledConfigEntry[]::new));
     }
 
@@ -91,27 +97,31 @@ class ScheduledConfigRepositoryIT {
         var entries = List.of(
                 ScheduledConfigEntry.builder()
                         .key(KEY)
-                        .value("1")
                         .validFrom(LocalDateTime.now().minusMinutes(3))
+                        .value("1")
+                        .created(LocalDateTime.now())
                         .build(),
                 ScheduledConfigEntry.builder()
                         .key(KEY)
-                        .value("2")
                         .validFrom(LocalDateTime.now().minusSeconds(2))
+                        .value("2")
+                        .created(LocalDateTime.now())
                         .build(),
                 ScheduledConfigEntry.builder()
                         .key(KEY + "_OTHER")
-                        .value("3")
                         .validFrom(LocalDateTime.now().minusSeconds(1))
+                        .value("3")
+                        .created(LocalDateTime.now())
                         .build(),
                 ScheduledConfigEntry.builder()
                         .key(KEY)
-                        .value("4")
                         .validFrom(LocalDateTime.now().plusSeconds(1))
+                        .value("4")
+                        .created(LocalDateTime.now())
                         .build()
         );
 
-        underTest.saveAll(entries);
+        underTest.saveAll(entries)
 
         ScheduledConfigEntry expectedValue = entries.stream()
                 .filter(e -> Objects.equals(e.getKey(), KEY))

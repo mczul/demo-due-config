@@ -145,6 +145,7 @@ class DefaultControllerIT {
                     .key("FOO")
                     .validFrom(LocalDateTime.now().minusMinutes(1))
                     .value("BAR")
+                    .created(LocalDateTime.now().minusMinutes(1))
                     .author("john.doe")
                     .build();
             final ScheduledConfigEntry expectedEntry = scheduledConfigMapper.toDomain(sample.withId(42));

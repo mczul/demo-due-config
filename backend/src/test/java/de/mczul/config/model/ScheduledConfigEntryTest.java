@@ -29,12 +29,14 @@ class ScheduledConfigEntryTest {
                         .validFrom(LocalDateTime.now())
                         .value("MY_VALUE_1")
                         .comment(null)
+                        .created(LocalDateTime.now().minusHours(1))
                         .build(),
                 ScheduledConfigEntry.builder()
                         .key("MY_KEY_2")
                         .validFrom(LocalDateTime.now())
                         .value(null)
                         .comment("New configuration entry for test purposes...")
+                        .created(LocalDateTime.now())
                         .build()
         );
     }

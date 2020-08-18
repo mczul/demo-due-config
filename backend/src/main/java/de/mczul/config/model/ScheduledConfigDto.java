@@ -21,11 +21,13 @@ public class ScheduledConfigDto implements ScheduledConfig {
     private String key;
     private LocalDateTime validFrom;
     private String value;
+    private LocalDateTime created;
     private String comment;
     @NotBlank(message = "{NotBlank.ScheduledConfigDto.author.message}")
     private String author;
     private List<@NotBlank(message = "{NotNull.ScheduledConfigDto.commentHistoryEntry.message}") String> commentHistory;
 
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object other) {
         return isEqual(other);

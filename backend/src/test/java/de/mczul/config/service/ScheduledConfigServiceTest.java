@@ -1,6 +1,7 @@
 package de.mczul.config.service;
 
 import de.mczul.config.model.ScheduledConfigEntry;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -34,5 +35,11 @@ class ScheduledConfigServiceTest {
         underTest.set(sample);
         verify(scheduledConfigRepository).save(argCaptor.capture());
         assertThat(argCaptor.getValue().getKey()).as("Service does not convert keys to lowercase when saving.").isLowerCase();
+    }
+
+    @Disabled("Not yet implemented")
+    @Test
+    void cleanup_must_only_delete_entries_with_newer_valid_from_timestamp() {
+        // TODO: Implementation is missing
     }
 }

@@ -5,6 +5,7 @@ import de.mczul.config.validation.ValidConfigKey;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -50,6 +51,17 @@ public interface ScheduledConfig {
     String getValue();
 
     void setValue(String value);
+
+    /**
+     * TODO: Missing
+     *
+     * @return
+     */
+    @NotNull(message = "{NotNull.scheduledConfig.created.message}")
+    @PastOrPresent(message = "{PastOrPresent.scheduledConfig.created.message}")
+    LocalDateTime getCreated();
+
+    void setCreated(LocalDateTime created);
 
     /**
      * TODO: Missing
