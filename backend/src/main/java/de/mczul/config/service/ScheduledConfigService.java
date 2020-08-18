@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +21,13 @@ public class ScheduledConfigService {
 
     @Transactional
     public ScheduledConfigEntry set(ScheduledConfigEntry entry) {
-        // Assure uniform key representation
-        entry.setKey(entry.getKey().toLowerCase());
-        return entryRepository.save(entry);
+        return entryRepository.save(
+                entry
+                        // Assure uniform key representation
+                        .withKey(entry.getKey().toLowerCase())
+                        // Set created timestamp
+                        .withCreated(LocalDateTime.now())
+        );
     }
 
     @Transactional(readOnly = true)
