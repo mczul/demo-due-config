@@ -22,9 +22,11 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: clean
-      run: cd backend,
-           ./mvnw clean.
+      run: |
+           cd backend
+           ./mvnw clean
 
     - name: verify
-      run: cd backend,
-           ./mvnw test.
+      run: |
+           cd backend
+           ./mvnw test
