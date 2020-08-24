@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Slf4j
@@ -17,6 +19,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ScheduledConfigService {
+    public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
     private final ScheduledConfigRepository entryRepository;
 
     @Transactional
@@ -24,15 +27,15 @@ public class ScheduledConfigService {
         return entryRepository.save(
                 entry
                         // Assure uniform key representation
-                        .withKey(entry.getKey().toLowerCase())
+                        .withKey(entry.getKey().toLowerCase(DEFAULT_LOCALE))
                         // Set created timestamp
-                        .withCreated(LocalDateTime.now())
+                        .withCreated(LocalDateTime.now(ZoneId.systemDefault()))
         );
     }
 
     @Transactional(readOnly = true)
     public Optional<ScheduledConfigEntry> get(String key) {
-        return entryRepository.findCurrentByKey(key);
+        return entryRepository.findCurrentByKey(key.toLowerCase(DEFAULT_LOCALE));
     }
 
     @Transactional
