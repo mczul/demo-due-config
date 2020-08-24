@@ -3,7 +3,7 @@ package de.mczul.config.model;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -19,9 +19,9 @@ public class ScheduledConfigDto implements ScheduledConfig {
 
     private Integer id;
     private String key;
-    private LocalDateTime validFrom;
+    private ZonedDateTime validFrom;
     private String value;
-    private LocalDateTime created;
+    private ZonedDateTime created;
     private String comment;
     @NotBlank(message = "{NotBlank.ScheduledConfigDto.author.message}")
     private String author;

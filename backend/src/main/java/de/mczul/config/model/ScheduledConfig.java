@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Positive;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 public interface ScheduledConfig {
@@ -39,9 +39,9 @@ public interface ScheduledConfig {
      * @return
      */
     @NotNull(message = "{NotNull.scheduledConfig.validFrom.message}")
-    LocalDateTime getValidFrom();
+    ZonedDateTime getValidFrom();
 
-    void setValidFrom(LocalDateTime validFrom);
+    void setValidFrom(ZonedDateTime validFrom);
 
     /**
      * TODO: Missing
@@ -59,9 +59,9 @@ public interface ScheduledConfig {
      */
     @NotNull(message = "{NotNull.scheduledConfig.created.message}")
     @PastOrPresent(message = "{PastOrPresent.scheduledConfig.created.message}")
-    LocalDateTime getCreated();
+    ZonedDateTime getCreated();
 
-    void setCreated(LocalDateTime created);
+    void setCreated(ZonedDateTime created);
 
     /**
      * TODO: Missing

@@ -10,7 +10,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.ZonedDateTime;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -26,17 +27,17 @@ class ScheduledConfigEntryTest {
         return Stream.of(
                 ScheduledConfigEntry.builder()
                         .key("MY_KEY_1")
-                        .validFrom(LocalDateTime.now())
+                        .validFrom(ZonedDateTime.now())
                         .value("MY_VALUE_1")
                         .comment(null)
-                        .created(LocalDateTime.now().minusHours(1))
+                        .created(ZonedDateTime.now().minusHours(1))
                         .build(),
                 ScheduledConfigEntry.builder()
                         .key("MY_KEY_2")
-                        .validFrom(LocalDateTime.now())
+                        .validFrom(ZonedDateTime.now())
                         .value(null)
                         .comment("New configuration entry for test purposes...")
-                        .created(LocalDateTime.now())
+                        .created(ZonedDateTime.now())
                         .build()
         );
     }
@@ -46,25 +47,25 @@ class ScheduledConfigEntryTest {
                 // Key is null
                 ScheduledConfigEntry.builder()
                         .key(null)
-                        .validFrom(LocalDateTime.now())
+                        .validFrom(ZonedDateTime.now())
                         .value("MY_VALUE_1")
-                        .created(LocalDateTime.now())
+                        .created(ZonedDateTime.now())
                         .comment(null)
                         .build(),
                 // Key is blank
                 ScheduledConfigEntry.builder()
                         .key("")
-                        .validFrom(LocalDateTime.now())
+                        .validFrom(ZonedDateTime.now())
                         .value("MY_VALUE_1")
-                        .created(LocalDateTime.now())
+                        .created(ZonedDateTime.now())
                         .comment(null)
                         .build(),
                 // Key contains only whitespaces
                 ScheduledConfigEntry.builder()
                         .key(" ")
-                        .validFrom(LocalDateTime.now())
+                        .validFrom(ZonedDateTime.now())
                         .value("MY_VALUE_1")
-                        .created(LocalDateTime.now())
+                        .created(ZonedDateTime.now())
                         .comment(null)
                         .build(),
                 // ValidFrom is null
@@ -72,32 +73,32 @@ class ScheduledConfigEntryTest {
                         .key("MY_KEY")
                         .validFrom(null)
                         .value("MY_VALUE_2")
-                        .created(LocalDateTime.now())
+                        .created(ZonedDateTime.now())
                         .comment(null)
                         .build(),
                 // Negative id
                 ScheduledConfigEntry.builder()
                         .id(-1)
                         .key("MY_KEY")
-                        .validFrom(LocalDateTime.now())
+                        .validFrom(ZonedDateTime.now())
                         .value("MY_VALUE_2")
-                        .created(LocalDateTime.now())
+                        .created(ZonedDateTime.now())
                         .comment(null)
                         .build(),
                 // Blank comment
                 ScheduledConfigEntry.builder()
                         .key("MY_KEY")
-                        .validFrom(LocalDateTime.now())
+                        .validFrom(ZonedDateTime.now())
                         .value("MY_VALUE_2")
-                        .created(LocalDateTime.now())
+                        .created(ZonedDateTime.now())
                         .comment(" ")
                         .build(),
                 // Created in future
                 ScheduledConfigEntry.builder()
                         .key("MY_KEY")
-                        .validFrom(LocalDateTime.now())
+                        .validFrom(ZonedDateTime.now())
                         .value("MY_VALUE_3")
-                        .created(LocalDateTime.now().plusMinutes(1))
+                        .created(ZonedDateTime.now().plusMinutes(1))
                         .comment(null)
                         .build()
         );
@@ -126,7 +127,7 @@ class ScheduledConfigEntryTest {
     void equals_and_hash_code() {
         final var id = 42;
         final var key = "MY_KEY";
-        final var validFrom = LocalDateTime.now();
+        final var validFrom = ZonedDateTime.now();
         final var value = "MY_VALUE";
 
         final var first = ScheduledConfigEntry.builder()

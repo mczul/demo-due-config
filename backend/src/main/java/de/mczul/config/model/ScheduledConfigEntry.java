@@ -3,7 +3,7 @@ package de.mczul.config.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Data
 @Builder
@@ -26,13 +26,13 @@ public class ScheduledConfigEntry implements ScheduledConfig {
     private String key;
 
     @Column(name = "valid_from")
-    private LocalDateTime validFrom;
+    private ZonedDateTime validFrom;
 
     @Column(name = "value")
     private String value;
 
     @Column(name = "created")
-    private LocalDateTime created;
+    private ZonedDateTime created;
 
     @Column(name = "comment")
     private String comment;

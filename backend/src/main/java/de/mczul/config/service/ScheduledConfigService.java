@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -29,7 +29,7 @@ public class ScheduledConfigService {
                         // Assure uniform key representation
                         .withKey(entry.getKey().toLowerCase(DEFAULT_LOCALE))
                         // Set created timestamp
-                        .withCreated(LocalDateTime.now(ZoneId.systemDefault()))
+                        .withCreated(ZonedDateTime.now(ZoneId.of("UTC")))
         );
     }
 

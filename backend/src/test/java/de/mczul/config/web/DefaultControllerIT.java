@@ -26,7 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -60,9 +60,9 @@ class DefaultControllerIT {
     static Stream<Arguments> buildGetScheduledConfigsArgs() {
         return Stream.of(
                 arguments(0, 10, List.of(
-                        ScheduledConfigEntry.builder().id(1).key("KEY_A").validFrom(LocalDateTime.now()).value("23").build(),
-                        ScheduledConfigEntry.builder().id(2).key("KEY_A").validFrom(LocalDateTime.now().plusDays(1)).value("42").build(),
-                        ScheduledConfigEntry.builder().id(3).key("KEY_B").validFrom(LocalDateTime.now()).value("4711").build()
+                        ScheduledConfigEntry.builder().id(1).key("KEY_A").validFrom(ZonedDateTime.now()).value("23").build(),
+                        ScheduledConfigEntry.builder().id(2).key("KEY_A").validFrom(ZonedDateTime.now().plusDays(1)).value("42").build(),
+                        ScheduledConfigEntry.builder().id(3).key("KEY_B").validFrom(ZonedDateTime.now()).value("4711").build()
                         )
                 ),
                 arguments(1, 1, List.of())
@@ -83,7 +83,7 @@ class DefaultControllerIT {
             final ConfigQueryResponse response = objectMapper.readValue(content, ConfigQueryResponse.class);
 
             assertThat(response).as("Query response was NULL").isNotNull();
-            assertThat(response.getReferenceTime()).as("The reference timestamp of the query response is invalid").isBeforeOrEqualTo(LocalDateTime.now());
+            assertThat(response.getReferenceTime()).as("The reference timestamp of the query response is invalid").isBeforeOrEqualTo(ZonedDateTime.now());
             assertThat(response.getValue()).as("The query response a value other than NULL").isNull();
         }
 
@@ -100,9 +100,9 @@ class DefaultControllerIT {
             when(scheduledConfigRepository.findCurrentByKey(key)).thenReturn(
                     Optional.of(ScheduledConfigEntry.builder()
                             .key(key)
-                            .validFrom(LocalDateTime.now().minusDays(1))
+                            .validFrom(ZonedDateTime.now().minusDays(1))
                             .value(null)
-                            .created(LocalDateTime.now())
+                            .created(ZonedDateTime.now())
                             .build())
             );
             checkNullValueQueryResponse(key);
@@ -144,9 +144,9 @@ class DefaultControllerIT {
         void must_save_valid_samples() throws Exception {
             final ScheduledConfigDto sample = ScheduledConfigDto.builder()
                     .key("FOO")
-                    .validFrom(LocalDateTime.now().minusMinutes(1))
+                    .validFrom(ZonedDateTime.now().minusMinutes(1))
                     .value("BAR")
-                    .created(LocalDateTime.now().minusMinutes(1))
+                    .created(ZonedDateTime.now().minusMinutes(1))
                     .author("john.doe")
                     .build();
             final ScheduledConfigEntry expectedEntry = scheduledConfigMapper.toDomain(sample.withId(42));
@@ -177,7 +177,7 @@ class DefaultControllerIT {
         void must_handle_invalid_samples_properly() throws Exception {
             final ScheduledConfigDto sample = ScheduledConfigDto.builder()
                     .key("")
-                    .validFrom(LocalDateTime.now())
+                    .validFrom(ZonedDateTime.now())
                     .value(null)
                     .build();
 

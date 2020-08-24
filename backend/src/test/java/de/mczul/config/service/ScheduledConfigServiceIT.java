@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,9 +37,9 @@ class ScheduledConfigServiceIT {
 
         ScheduledConfigEntry first = ScheduledConfigEntry.builder()
                 .key(KEY)
-                .validFrom(LocalDateTime.now().plusMinutes(5))
+                .validFrom(ZonedDateTime.now().plusMinutes(5))
                 .value("1")
-                .created(LocalDateTime.now())
+                .created(ZonedDateTime.now())
                 .comment(null)
                 .build();
 
@@ -55,23 +55,23 @@ class ScheduledConfigServiceIT {
 
         ScheduledConfigEntry previous = ScheduledConfigEntry.builder()
                 .key(KEY)
-                .validFrom(LocalDateTime.now().minusMinutes(5))
+                .validFrom(ZonedDateTime.now().minusMinutes(5))
                 .value("1")
-                .created(LocalDateTime.now().minusHours(1))
+                .created(ZonedDateTime.now().minusHours(1))
                 .build();
 
         ScheduledConfigEntry current = ScheduledConfigEntry.builder()
                 .key(KEY)
-                .validFrom(LocalDateTime.now().minusSeconds(1))
+                .validFrom(ZonedDateTime.now().minusSeconds(1))
                 .value("2")
-                .created(LocalDateTime.now().minusMinutes(1))
+                .created(ZonedDateTime.now().minusMinutes(1))
                 .build();
 
         ScheduledConfigEntry future = ScheduledConfigEntry.builder()
                 .key(KEY)
-                .validFrom(LocalDateTime.now().plusSeconds(1))
+                .validFrom(ZonedDateTime.now().plusSeconds(1))
                 .value("3")
-                .created(LocalDateTime.now().minusSeconds(1))
+                .created(ZonedDateTime.now().minusSeconds(1))
                 .build();
 
         underTest.set(previous);
@@ -98,9 +98,9 @@ class ScheduledConfigServiceIT {
 
         final ScheduledConfigEntry sample = ScheduledConfigEntry.builder()
                 .key(KEY)
-                .validFrom(LocalDateTime.now().minusMinutes(5))
+                .validFrom(ZonedDateTime.now().minusMinutes(5))
                 .value("1")
-                .created(LocalDateTime.now().minusMinutes(1))
+                .created(ZonedDateTime.now().minusMinutes(1))
                 .build();
         final ScheduledConfigEntry redundant = ScheduledConfigEntry.builder()
                 .key(sample.getKey())

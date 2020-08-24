@@ -12,7 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -41,7 +41,7 @@ class ScheduledConfigServiceTest {
                 .isLowerCase();
         assertThat(argCaptor.getValue().getCreated())
                 .as("Service does not set current timestamp for created attribute when saving.")
-                .isBetween(LocalDateTime.now().minusSeconds(1), LocalDateTime.now());
+                .isBetween(ZonedDateTime.now().minusSeconds(1), ZonedDateTime.now());
     }
 
     @Disabled("Not yet implemented")
