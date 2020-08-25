@@ -22,6 +22,8 @@ public interface ScheduledConfig {
 
     void setId(Integer id);
 
+    ScheduledConfig withId(Integer value);
+
     /**
      * TODO: Missing
      *
@@ -33,6 +35,8 @@ public interface ScheduledConfig {
 
     void setKey(String value);
 
+    ScheduledConfig withKey(String value);
+
     /**
      * TODO: Missing
      *
@@ -43,6 +47,8 @@ public interface ScheduledConfig {
 
     void setValidFrom(ZonedDateTime validFrom);
 
+    ScheduledConfig withValidFrom(ZonedDateTime value);
+
     /**
      * TODO: Missing
      *
@@ -51,6 +57,8 @@ public interface ScheduledConfig {
     String getValue();
 
     void setValue(String value);
+
+    ScheduledConfig withValue(String value);
 
     /**
      * TODO: Missing
@@ -63,6 +71,8 @@ public interface ScheduledConfig {
 
     void setCreated(ZonedDateTime created);
 
+    ScheduledConfig withCreated(ZonedDateTime value);
+
     /**
      * TODO: Missing
      *
@@ -72,6 +82,8 @@ public interface ScheduledConfig {
     String getComment();
 
     void setComment(String value);
+
+    ScheduledConfig withComment(String value);
 
     /**
      * TODO: Missing
