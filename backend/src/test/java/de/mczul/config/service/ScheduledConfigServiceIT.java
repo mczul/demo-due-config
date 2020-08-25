@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
@@ -26,13 +28,13 @@ class ScheduledConfigServiceIT {
     private ScheduledConfigService underTest;
 
     @Test
-    void not_existing() {
+    void return_empty_if_key_not_existing() {
         Optional<ScheduledConfigEntry> entry = underTest.get("MY_KEY_NOT_EXISTING");
         assertThat(entry).isEmpty();
     }
 
     @Test
-    void only_future() {
+    void return_empty_if_valid_from_in_future() {
         final String KEY = "MY_KEY_ONLY_FUTURE";
 
         ScheduledConfigEntry first = ScheduledConfigEntry.builder()
@@ -50,7 +52,42 @@ class ScheduledConfigServiceIT {
     }
 
     @Test
-    void previous_and_current_and_future() throws InterruptedException {
+    void handle_valid_from_with_different_time_zones_correctly() {
+        final String key = "MY_SAMPLE_KEY";
+        var first = ScheduledConfigEntry.builder()
+                .key(key)
+                .validFrom(ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Australia/Sydney")))
+                .value("1")
+                .build();
+        var second = ScheduledConfigEntry.builder()
+                .key(key)
+                .validFrom(ZonedDateTime.of(LocalDateTime.now().minusMinutes(1), ZoneId.of("Europe/Berlin")))
+                .value("2")
+                .build();
+        var third = ScheduledConfigEntry.builder()
+                .key(key)
+                .validFrom(ZonedDateTime.of(LocalDateTime.now().minusHours(1), ZoneId.of("America/Los_Angeles")))
+                .value("3")
+                .build();
+
+        underTest.set(first);
+        underTest.set(second);
+        underTest.set(third);
+
+        entryRepository.findAll();
+
+        var result = underTest.get(key);
+
+        assertThat(result.isPresent()).isTrue();
+        var actual = result.get();
+        assertThat(actual.getValue()).isEqualTo("2");
+        assertThat(actual.getValidFrom()).isAfter(first.getValidFrom());
+        assertThat(actual.getValidFrom()).isEqualTo(second.getValidFrom());
+        assertThat(actual.getValidFrom()).isBefore(third.getValidFrom());
+    }
+
+    @Test
+    void handle_valid_from_with_previous_and_current_and_future() throws InterruptedException {
         final String KEY = "MY_KEY_PREVIOUS_AND_CURRENT_AND_FUTURE";
 
         ScheduledConfigEntry previous = ScheduledConfigEntry.builder()
