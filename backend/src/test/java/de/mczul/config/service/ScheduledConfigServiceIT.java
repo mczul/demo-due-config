@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Optional;
@@ -54,19 +53,21 @@ class ScheduledConfigServiceIT {
     @Test
     void handle_valid_from_with_different_time_zones_correctly() {
         final String key = "MY_SAMPLE_KEY";
+        final ZonedDateTime referenceDateTime = ZonedDateTime.now(ZoneId.of("Europe/Berlin"));
+
         var first = ScheduledConfigEntry.builder()
                 .key(key)
-                .validFrom(ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Australia/Sydney")))
+                .validFrom(referenceDateTime.plusHours(7).withZoneSameInstant(ZoneId.of("America/Los_Angeles")))
                 .value("1")
                 .build();
         var second = ScheduledConfigEntry.builder()
                 .key(key)
-                .validFrom(ZonedDateTime.of(LocalDateTime.now().minusMinutes(1), ZoneId.of("Europe/Berlin")))
+                .validFrom(referenceDateTime.minusHours(2))
                 .value("2")
                 .build();
         var third = ScheduledConfigEntry.builder()
                 .key(key)
-                .validFrom(ZonedDateTime.of(LocalDateTime.now().minusHours(1), ZoneId.of("America/Los_Angeles")))
+                .validFrom(referenceDateTime.minusHours(10).withZoneSameInstant(ZoneId.of("Australia/Sydney")))
                 .value("3")
                 .build();
 
@@ -74,16 +75,14 @@ class ScheduledConfigServiceIT {
         underTest.set(second);
         underTest.set(third);
 
-        entryRepository.findAll();
-
         var result = underTest.get(key);
 
         assertThat(result.isPresent()).isTrue();
         var actual = result.get();
         assertThat(actual.getValue()).isEqualTo("2");
-        assertThat(actual.getValidFrom()).isAfter(first.getValidFrom());
+        assertThat(actual.getValidFrom()).isBefore(first.getValidFrom());
         assertThat(actual.getValidFrom()).isEqualTo(second.getValidFrom());
-        assertThat(actual.getValidFrom()).isBefore(third.getValidFrom());
+        assertThat(actual.getValidFrom()).isAfter(third.getValidFrom());
     }
 
     @Test
