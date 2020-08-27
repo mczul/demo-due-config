@@ -56,6 +56,13 @@ class ScheduledConfigRepositoryIT {
                         .created(ZonedDateTime.now().minusHours(12))
                         .build(),
                 ScheduledConfigEntry.builder()
+                        .key(key + "_X")
+                        .validFrom(ZonedDateTime.now().plusHours(6))
+                        .value("X")
+                        .comment("Something completely irrelevant")
+                        .created(ZonedDateTime.now().minusHours(6))
+                        .build(),
+                ScheduledConfigEntry.builder()
                         .key(key)
                         .validFrom(ZonedDateTime.now().plusHours(24))
                         .value("3")
@@ -68,6 +75,7 @@ class ScheduledConfigRepositoryIT {
 
         // Descending order by creation timestamp
         var expectedComments = entries.stream()
+                .filter(entry -> key.equalsIgnoreCase(entry.getKey()))
                 .sorted(Comparator.comparing(ScheduledConfigEntry::getCreated).reversed())
                 .map(ScheduledConfigEntry::getComment)
                 .collect(Collectors.toUnmodifiableList());
