@@ -35,4 +35,10 @@ public interface ScheduledConfigRepository extends JpaRepository<ScheduledConfig
             "   AND e2.validFrom > e1.validFrom " +
             ")")
     List<ScheduledConfigEntry> findOutdated();
+
+    @Query("SELECT e.comment " +
+            "FROM ScheduledConfigEntry e " +
+            "WHERE e.key = ?1 " +
+            "ORDER BY e.created DESC")
+    List<String> loadCommentsByKey(String key);
 }

@@ -2,6 +2,7 @@ package de.mczul.config.service;
 
 import de.mczul.config.model.ScheduledConfigEntry;
 import de.mczul.config.testing.IntegrationTest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Slf4j
 @DisplayName("ScheduledConfigRepository tests")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @IntegrationTest
@@ -32,6 +34,49 @@ class ScheduledConfigRepositoryIT {
     @BeforeEach
     void beforeEach() {
         repository.deleteAll();
+    }
+
+    @Transactional
+    @Test
+    void load_comments_by_key() {
+        final String key = "MY_CRYPTIC_KEY";
+        var entries = List.of(
+                ScheduledConfigEntry.builder()
+                        .key(key)
+                        .validFrom(ZonedDateTime.now().plusHours(1))
+                        .value("1")
+                        .comment("Valid in 1 hour; Set 1 hour ago")
+                        .created(ZonedDateTime.now().minusHours(1))
+                        .build(),
+                ScheduledConfigEntry.builder()
+                        .key(key)
+                        .validFrom(ZonedDateTime.now().plusHours(12))
+                        .value("2")
+                        .comment("Valid in 12 hours; Set 12 hours ago")
+                        .created(ZonedDateTime.now().minusHours(12))
+                        .build(),
+                ScheduledConfigEntry.builder()
+                        .key(key)
+                        .validFrom(ZonedDateTime.now().plusHours(24))
+                        .value("3")
+                        .comment("Valid in 24 hours; Set 24 hours ago")
+                        .created(ZonedDateTime.now().minusHours(24))
+                        .build()
+        );
+
+        underTest.saveAll(entries);
+
+        // Descending order by creation timestamp
+        var expectedComments = entries.stream()
+                .sorted(Comparator.comparing(ScheduledConfigEntry::getCreated).reversed())
+                .map(ScheduledConfigEntry::getComment)
+                .collect(Collectors.toUnmodifiableList());
+        // Database query
+        var actualComments = underTest.loadCommentsByKey(key);
+
+        assertThat(actualComments).as("Number of comments differ").hasSameSizeAs(expectedComments);
+        assertThat(actualComments).as("Actual comment list did not contain all expected entries and / or not in expected order")
+                .containsExactly(expectedComments.toArray(String[]::new));
     }
 
     @Transactional
