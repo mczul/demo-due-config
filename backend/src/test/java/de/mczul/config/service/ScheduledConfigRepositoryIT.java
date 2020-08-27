@@ -2,7 +2,6 @@ package de.mczul.config.service;
 
 import de.mczul.config.model.ScheduledConfigEntry;
 import de.mczul.config.testing.IntegrationTest;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 @DisplayName("ScheduledConfigRepository tests")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @IntegrationTest

@@ -2,12 +2,10 @@ package de.mczul.config.service;
 
 import de.mczul.config.model.ScheduledConfigDto;
 import de.mczul.config.model.ScheduledConfigEntry;
-import org.mapstruct.InheritInverseConfiguration;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 
 @Mapper
+@DecoratedWith(ScheduledConfigMapperDecorator.class)
 public interface ScheduledConfigMapper {
 
     @Mappings({
