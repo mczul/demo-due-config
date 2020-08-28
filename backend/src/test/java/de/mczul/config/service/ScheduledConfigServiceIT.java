@@ -41,6 +41,7 @@ class ScheduledConfigServiceIT {
                 .validFrom(ZonedDateTime.now().plusMinutes(5))
                 .value("1")
                 .created(ZonedDateTime.now())
+                .author("A")
                 .comment(null)
                 .build();
 
@@ -59,16 +60,22 @@ class ScheduledConfigServiceIT {
                 .key(key)
                 .validFrom(referenceDateTime.plusHours(7).withZoneSameInstant(ZoneId.of("America/Los_Angeles")))
                 .value("1")
+                .created(ZonedDateTime.now())
+                .author("A")
                 .build();
         var second = ScheduledConfigEntry.builder()
                 .key(key)
                 .validFrom(referenceDateTime.minusHours(2))
                 .value("2")
+                .created(ZonedDateTime.now())
+                .author("B")
                 .build();
         var third = ScheduledConfigEntry.builder()
                 .key(key)
                 .validFrom(referenceDateTime.minusHours(10).withZoneSameInstant(ZoneId.of("Australia/Sydney")))
                 .value("3")
+                .created(ZonedDateTime.now())
+                .author("C")
                 .build();
 
         underTest.set(first);
@@ -94,6 +101,7 @@ class ScheduledConfigServiceIT {
                 .validFrom(ZonedDateTime.now().minusMinutes(5))
                 .value("1")
                 .created(ZonedDateTime.now().minusHours(1))
+                .author("A")
                 .build();
 
         ScheduledConfigEntry current = ScheduledConfigEntry.builder()
@@ -101,6 +109,7 @@ class ScheduledConfigServiceIT {
                 .validFrom(ZonedDateTime.now().minusSeconds(1))
                 .value("2")
                 .created(ZonedDateTime.now().minusMinutes(1))
+                .author("B")
                 .build();
 
         ScheduledConfigEntry future = ScheduledConfigEntry.builder()
@@ -108,6 +117,7 @@ class ScheduledConfigServiceIT {
                 .validFrom(ZonedDateTime.now().plusSeconds(1))
                 .value("3")
                 .created(ZonedDateTime.now().minusSeconds(1))
+                .author("C")
                 .build();
 
         underTest.set(previous);
@@ -137,12 +147,14 @@ class ScheduledConfigServiceIT {
                 .validFrom(ZonedDateTime.now().minusMinutes(5))
                 .value("1")
                 .created(ZonedDateTime.now().minusMinutes(1))
+                .author("A")
                 .build();
         final ScheduledConfigEntry redundant = ScheduledConfigEntry.builder()
                 .key(sample.getKey())
                 .validFrom(sample.getValidFrom())
                 .value(sample.getValue())
                 .created(sample.getCreated())
+                .author("B")
                 .build();
 
         underTest.set(sample);

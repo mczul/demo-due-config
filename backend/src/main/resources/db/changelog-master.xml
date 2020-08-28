@@ -15,6 +15,7 @@
             <column name="value" type="TEXT"/>
             <column name="created" type="TIMESTAMP"/>
             <column name="comment" type="TEXT"/>
+            <column name="author" type="VARCHAR(80)"/>
         </createTable>
         <addNotNullConstraint schemaName="config" tableName="scheduled_config" columnName="id"/>
         <addNotNullConstraint schemaName="config" tableName="scheduled_config" columnName="key"/>

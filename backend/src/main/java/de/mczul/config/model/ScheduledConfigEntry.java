@@ -37,6 +37,9 @@ public class ScheduledConfigEntry implements ScheduledConfig {
     @Column(name = "comment")
     private String comment;
 
+    @Column(name = "author")
+    private String author;
+
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object other) {

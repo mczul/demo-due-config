@@ -18,15 +18,17 @@ class ScheduledConfigEntryTest extends AbstractScheduledConfigTest {
                         .key("MY_KEY_1")
                         .validFrom(ZonedDateTime.now())
                         .value("MY_VALUE_1")
-                        .comment(null)
                         .created(ZonedDateTime.now().minusHours(1))
+                        .author("A")
+                        .comment(null)
                         .build(),
                 ScheduledConfigEntry.builder()
                         .key("MY_KEY_2")
                         .validFrom(ZonedDateTime.now())
                         .value(null)
-                        .comment("New configuration entry for test purposes...")
                         .created(ZonedDateTime.now())
+                        .author("A")
+                        .comment("New configuration entry for test purposes...")
                         .build()
         );
     }
@@ -40,6 +42,7 @@ class ScheduledConfigEntryTest extends AbstractScheduledConfigTest {
                         .validFrom(ZonedDateTime.now())
                         .value("MY_VALUE_1")
                         .created(ZonedDateTime.now())
+                        .author("A")
                         .comment(null)
                         .build(),
                 // Key is blank
@@ -48,6 +51,7 @@ class ScheduledConfigEntryTest extends AbstractScheduledConfigTest {
                         .validFrom(ZonedDateTime.now())
                         .value("MY_VALUE_1")
                         .created(ZonedDateTime.now())
+                        .author("A")
                         .comment(null)
                         .build(),
                 // Key contains only whitespaces
@@ -56,6 +60,7 @@ class ScheduledConfigEntryTest extends AbstractScheduledConfigTest {
                         .validFrom(ZonedDateTime.now())
                         .value("MY_VALUE_1")
                         .created(ZonedDateTime.now())
+                        .author("A")
                         .comment(null)
                         .build(),
                 // ValidFrom is null
@@ -64,6 +69,7 @@ class ScheduledConfigEntryTest extends AbstractScheduledConfigTest {
                         .validFrom(null)
                         .value("MY_VALUE_2")
                         .created(ZonedDateTime.now())
+                        .author("A")
                         .comment(null)
                         .build(),
                 // Negative id
@@ -73,6 +79,7 @@ class ScheduledConfigEntryTest extends AbstractScheduledConfigTest {
                         .validFrom(ZonedDateTime.now())
                         .value("MY_VALUE_2")
                         .created(ZonedDateTime.now())
+                        .author("A")
                         .comment(null)
                         .build(),
                 // Blank comment
@@ -81,6 +88,7 @@ class ScheduledConfigEntryTest extends AbstractScheduledConfigTest {
                         .validFrom(ZonedDateTime.now())
                         .value("MY_VALUE_2")
                         .created(ZonedDateTime.now())
+                        .author("A")
                         .comment(" ")
                         .build(),
                 // Created in future
@@ -89,6 +97,16 @@ class ScheduledConfigEntryTest extends AbstractScheduledConfigTest {
                         .validFrom(ZonedDateTime.now())
                         .value("MY_VALUE_3")
                         .created(ZonedDateTime.now().plusMinutes(1))
+                        .author("A")
+                        .comment(null)
+                        .build(),
+                // Author is null
+                ScheduledConfigEntry.builder()
+                        .key("MY_KEY")
+                        .validFrom(ZonedDateTime.now())
+                        .value("MY_VALUE_3")
+                        .created(ZonedDateTime.now().minusMinutes(1))
+                        .author(null)
                         .comment(null)
                         .build()
         );
