@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("ScheduledConfigRepository tests")
+@DisplayName("ScheduledConfigRepository integration tests")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @IntegrationTest
 class ScheduledConfigRepositoryIT {

@@ -14,7 +14,7 @@ import javax.validation.Validator;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("@ValidConfigKey tests")
+@DisplayName("@ValidConfigKey unit tests")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 public class ValidConfigKeyTest {
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();

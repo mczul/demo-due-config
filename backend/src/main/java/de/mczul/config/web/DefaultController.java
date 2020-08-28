@@ -13,9 +13,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
+@Validated
 @RestController
 @RequestMapping(RestConstants.PATH_PREFIX_API)
 public class DefaultController {
@@ -53,10 +56,13 @@ public class DefaultController {
 
     @GetMapping(path = "{" + RestConstants.PATH_VARIABLE_KEY + "}")
     public ResponseEntity<ConfigQueryResponse> queryByKey(
-            @PathVariable(name = RestConstants.PATH_VARIABLE_KEY) String key
+            @NotBlank(message = "{NotBlank.scheduledConfig.key.message}") @PathVariable(name = RestConstants.PATH_VARIABLE_KEY) String key
     ) {
         Optional<ScheduledConfigEntry> entryOptional = scheduledConfigService.get(key);
-        var queryResponse = ConfigQueryResponse.builder().referenceTime(ZonedDateTime.now()).build();
+        var queryResponse = ConfigQueryResponse.builder()
+                .key(key.toLowerCase())
+                .referenceTime(ZonedDateTime.now())
+                .build();
         if (entryOptional.isEmpty()) {
             queryResponse.setValue(null);
         } else {

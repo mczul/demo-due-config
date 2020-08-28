@@ -1,5 +1,6 @@
 package de.mczul.config.model;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -32,6 +33,12 @@ public abstract class AbstractScheduledConfigTest {
     public abstract Stream<? extends ScheduledConfig> buildValid();
 
     public abstract Stream<? extends ScheduledConfig> buildInvalid();
+
+    @BeforeAll
+    void beforeAll() {
+        assertThat(buildValid().count()).as("Not enough valid samples provided").isGreaterThan(1);
+        assertThat(buildInvalid().count()).as("Not enough invalid samples provided").isGreaterThan(1);
+    }
 
     @ParameterizedTest
     @MethodSource("buildValid")

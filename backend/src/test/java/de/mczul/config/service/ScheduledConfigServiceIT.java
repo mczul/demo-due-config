@@ -16,7 +16,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-@DisplayName("ScheduledConfigService tests")
+@DisplayName("ScheduledConfigService integration tests")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @IntegrationTest
 class ScheduledConfigServiceIT {

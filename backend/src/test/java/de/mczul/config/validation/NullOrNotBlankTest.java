@@ -15,7 +15,7 @@ import javax.validation.Validator;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("@NullOrNotBlank tests")
+@DisplayName("@NullOrNotBlank unit tests")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 public class NullOrNotBlankTest {
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();

@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("ScheduledConfigMapper tests")
+@DisplayName("ScheduledConfigMapper integration tests")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @IntegrationTest
 class ScheduledConfigMapperIT {

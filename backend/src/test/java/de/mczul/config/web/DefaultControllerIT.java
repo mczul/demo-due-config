@@ -43,7 +43,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("DefaultController tests")
+/**
+ * TODO: Check, whether or not integration testing scope could be reduced to security testing
+ * TODO: Check if @SpringBootTest (as the implication of @IntegrationTest) could be replaced with the more lightweight @WebMvcTest(DefaultController.class)
+ * TODO: Transfer implementation tests to a Mockito powered unit test like e.g.
+ *
+ * @ExtendWith(MockitoExtension.class) with @InjectMocks for controller + @Mock for dependencies
+ */
+@DisplayName("DefaultController integration tests")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @IntegrationTest
 @AutoConfigureMockMvc
