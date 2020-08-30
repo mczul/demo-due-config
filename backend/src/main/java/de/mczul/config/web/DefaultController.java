@@ -34,14 +34,15 @@ public class DefaultController {
     final ScheduledConfigMapper scheduledConfigMapper;
 
     @GetMapping
-    public List<ScheduledConfigDto> getScheduledConfigs(
+    public ResponseEntity<List<ScheduledConfigDto>> getScheduledConfigs(
             @RequestParam(name = RestConstants.QUERY_PARAM_PAGE_INDEX, required = false, defaultValue = "0") int pageIndex,
             @RequestParam(name = RestConstants.QUERY_PARAM_PAGE_SIZE, required = false, defaultValue = "10") int pageSize
     ) {
         PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("key", "validFrom"));
         Page<ScheduledConfigEntry> domainPage = scheduledConfigRepository.findAll(pageRequest);
 
-        return domainPage.stream().map(scheduledConfigMapper::fromDomain).collect(Collectors.toUnmodifiableList());
+        List<ScheduledConfigDto> dtos = domainPage.stream().map(scheduledConfigMapper::fromDomain).collect(Collectors.toUnmodifiableList());
+        return ResponseEntity.ok(dtos);
     }
 
     @PostMapping
