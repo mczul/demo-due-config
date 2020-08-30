@@ -24,6 +24,8 @@ import org.springframework.http.ResponseEntity;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -132,27 +134,47 @@ public class DefaultControllerTest {
 
         @Test
         void get_scheduled_configs_with_multiple_records() {
-            when(scheduledConfigRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(List.of(
-                    ScheduledConfigEntry.builder().build()
-            )));
+            var samples = SampleProvider.buildValidEntries().collect(Collectors.toUnmodifiableList());
+            when(scheduledConfigRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(samples));
+            when(scheduledConfigMapper.toDto(any())).thenAnswer((invocation) -> SampleProvider.convertToDto(invocation.getArgument(0)));
+
             ResponseEntity<List<ScheduledConfigDto>> responseEntity = underTest.getScheduledConfigs(0, 100);
 
             verify(scheduledConfigRepository, times(1)).findAll(any(Pageable.class));
+            verify(scheduledConfigMapper, times(samples.size())).toDto(any());
 
             assertThat(responseEntity).isNotNull();
             assertThat(responseEntity.getStatusCode().is2xxSuccessful()).isTrue();
-            assertThat(responseEntity.getBody()).isEmpty();
+            assertThat(responseEntity.getBody()).isNotEmpty();
         }
 
         @ParameterizedTest
         @MethodSource("de.mczul.config.model.SampleProvider#buildValidDtos")
-        void post_scheduled_config_with_valid_sample() {
-            fail("Not yet implemented!");
+        void post_scheduled_config_with_valid_sample(ScheduledConfigDto sample) {
+            final int expectedId = new Random().nextInt();
+            // Clear ID attribute
+            sample = sample.withId(null);
+            var entry = SampleProvider.convertToDomain(sample);
+
+            when(scheduledConfigMapper.toDomain(sample)).thenReturn(entry);
+            when(scheduledConfigService.set(entry)).thenReturn(entry.withId(expectedId));
+            when(scheduledConfigMapper.toDto(entry.withId(expectedId))).thenReturn(sample.withId(expectedId));
+
+            ResponseEntity<ScheduledConfigDto> response = underTest.postScheduledConfig(sample.withId(null));
+
+            verify(scheduledConfigMapper, times(1)).toDomain(any(ScheduledConfigDto.class));
+            verify(scheduledConfigService, times(1)).set(any(ScheduledConfigEntry.class));
+            verify(scheduledConfigMapper, times(1)).toDto(any(ScheduledConfigEntry.class));
+
+            assertThat(response).isNotNull();
+            assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.CREATED);
+            assertThat(response.getBody()).isNotNull();
+            assertThat(response.getBody().getId()).isEqualTo(expectedId);
         }
 
         @ParameterizedTest
         @MethodSource("de.mczul.config.model.SampleProvider#buildInvalidDtos")
-        void post_scheduled_config_with_invalid_sample() {
+        void post_scheduled_config_with_invalid_sample(ScheduledConfigDto sample) {
             fail("Not yet implemented!");
         }
     }

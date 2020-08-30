@@ -2,6 +2,7 @@ package de.mczul.config.model;
 
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class ScheduledConfigDto implements ScheduledConfig {
     private ZonedDateTime created;
     private String comment;
     private String author;
+    @NotNull(message = "{NotNull.scheduledConfig.history.message}")
     private List<ScheduledConfigPast> history;
 
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")

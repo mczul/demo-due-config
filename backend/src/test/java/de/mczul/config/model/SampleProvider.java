@@ -1,16 +1,35 @@
 package de.mczul.config.model;
 
-import de.mczul.config.service.ScheduledConfigMapper;
-import de.mczul.config.service.ScheduledConfigMapperImpl_;
-
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
 public class SampleProvider {
-    // TODO: Dirty hack to prevent redundant sample definitions; uses the generated delegate of the mapper that depends on Spring beans when mapping entry to DTO
-    static ScheduledConfigMapper MAPPER = new ScheduledConfigMapperImpl_();
+
+    public static ScheduledConfigDto convertToDto(ScheduledConfigEntry entry) {
+        return ScheduledConfigDto.builder()
+                .id(entry.getId())
+                .key(entry.getKey())
+                .validFrom(entry.getValidFrom())
+                .value(entry.getValue())
+                .created(entry.getCreated())
+                .author(entry.getAuthor())
+                .comment(entry.getComment())
+                .build();
+    }
+
+    public static ScheduledConfigEntry convertToDomain(ScheduledConfigDto dto) {
+        return ScheduledConfigEntry.builder()
+                .id(dto.getId())
+                .key(dto.getKey())
+                .validFrom(dto.getValidFrom())
+                .value(dto.getValue())
+                .created(dto.getCreated())
+                .author(dto.getAuthor())
+                .comment(dto.getComment())
+                .build();
+    }
 
     public static Stream<ScheduledConfigDto> buildValidDtos() {
         return Stream.of(
@@ -152,12 +171,12 @@ public class SampleProvider {
 
     public static Stream<ScheduledConfigEntry> buildValidEntries() {
         // Prevent redundant samples; DTOs represent a superset of entry attributes
-        return buildValidDtos().map(MAPPER::toDomain);
+        return buildValidDtos().map(SampleProvider::convertToDomain);
     }
 
     public static Stream<ScheduledConfigEntry> buildInvalidEntries() {
         // Prevent redundant samples; DTOs represent a superset of entry attributes
-        return buildInvalidDtos().map(MAPPER::toDomain);
+        return buildInvalidDtos().map(SampleProvider::convertToDomain);
     }
 
 }
