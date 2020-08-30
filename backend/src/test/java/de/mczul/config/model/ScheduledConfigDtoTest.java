@@ -18,12 +18,12 @@ class ScheduledConfigDtoTest extends AbstractScheduledConfigTest {
 
     @Override
     public Stream<ScheduledConfigDto> buildValid() {
-        return Stream.empty();
+        return SampleProvider.buildValidDtos();
     }
 
     @Override
     public Stream<ScheduledConfigDto> buildInvalid() {
-        return Stream.empty();
+        return SampleProvider.buildInvalidDtos();
     }
 
     @Override

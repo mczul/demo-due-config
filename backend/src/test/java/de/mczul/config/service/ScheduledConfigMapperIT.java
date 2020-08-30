@@ -79,7 +79,7 @@ class ScheduledConfigMapperIT {
                 .collect(Collectors.toUnmodifiableList());
         final var latestEntry = relevantEntryList.stream()
                 .findFirst().orElseThrow();
-        var latestDto = underTest.fromDomain(latestEntry);
+        var latestDto = underTest.toDto(latestEntry);
         var actual = latestDto.getHistory().stream()
                 .map(ScheduledConfigPast::getId)
                 .collect(Collectors.toUnmodifiableList());

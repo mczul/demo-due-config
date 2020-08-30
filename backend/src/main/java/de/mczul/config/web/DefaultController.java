@@ -41,7 +41,7 @@ public class DefaultController {
         PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("key", "validFrom"));
         Page<ScheduledConfigEntry> domainPage = scheduledConfigRepository.findAll(pageRequest);
 
-        List<ScheduledConfigDto> dtos = domainPage.stream().map(scheduledConfigMapper::fromDomain).collect(Collectors.toUnmodifiableList());
+        List<ScheduledConfigDto> dtos = domainPage.stream().map(scheduledConfigMapper::toDto).collect(Collectors.toUnmodifiableList());
         return ResponseEntity.ok(dtos);
     }
 
@@ -50,7 +50,7 @@ public class DefaultController {
     public ResponseEntity<ScheduledConfigDto> postScheduledConfig(@RequestBody @Valid ScheduledConfigDto dto) {
         ScheduledConfigEntry submittedEntry = scheduledConfigMapper.toDomain(dto);
         ScheduledConfigEntry savedEntry = scheduledConfigService.set(submittedEntry);
-        ScheduledConfigDto result = scheduledConfigMapper.fromDomain(savedEntry);
+        ScheduledConfigDto result = scheduledConfigMapper.toDto(savedEntry);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }

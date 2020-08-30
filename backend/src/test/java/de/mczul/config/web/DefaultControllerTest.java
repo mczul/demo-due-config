@@ -1,8 +1,10 @@
 package de.mczul.config.web;
 
 import de.mczul.config.model.ConfigQueryResponse;
+import de.mczul.config.model.SampleProvider;
 import de.mczul.config.model.ScheduledConfigDto;
 import de.mczul.config.model.ScheduledConfigEntry;
+import de.mczul.config.service.ScheduledConfigMapper;
 import de.mczul.config.service.ScheduledConfigRepository;
 import de.mczul.config.service.ScheduledConfigService;
 import org.junit.jupiter.api.*;
@@ -13,12 +15,15 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -29,6 +34,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class DefaultControllerTest {
     @Mock
+    private ScheduledConfigMapper scheduledConfigMapper;
+    @Mock
     private ScheduledConfigRepository scheduledConfigRepository;
     @Mock
     private ScheduledConfigService scheduledConfigService;
@@ -36,18 +43,10 @@ public class DefaultControllerTest {
     @InjectMocks
     private DefaultController underTest;
 
-    static Stream<ScheduledConfigDto> buildValidDto() {
-        return Stream.empty();
-    }
-
-    static Stream<ScheduledConfigDto> buildInvalidDto() {
-        return Stream.empty();
-    }
-
     @BeforeAll
     static void beforeAll() {
-        assertThat(buildValidDto().count()).as("Not enough valid DTO samples provided").isGreaterThan(1);
-        assertThat(buildInvalidDto().count()).as("Not enough invalid DTO samples provided").isGreaterThan(1);
+        assertThat(SampleProvider.buildValidDtos().count()).as("Not enough valid DTO samples provided").isGreaterThan(1);
+        assertThat(SampleProvider.buildInvalidDtos().count()).as("Not enough invalid DTO samples provided").isGreaterThan(1);
     }
 
     @Nested
@@ -114,23 +113,45 @@ public class DefaultControllerTest {
     @DisplayName("Entry tests")
     class EntryTests {
         @Test
+        void pass_paging_information_to_data_layer() {
+            underTest.getScheduledConfigs(12, 34);
+            verify(scheduledConfigRepository, times(1)).findAll(any(Pageable.class));
+        }
+
+        @Test
         void get_scheduled_configs_with_empty_database() {
-            fail("Not yet implemented!");
+            when(scheduledConfigRepository.findAll(any(Pageable.class))).thenReturn(Page.empty());
+            ResponseEntity<List<ScheduledConfigDto>> responseEntity = underTest.getScheduledConfigs(12, 34);
+
+            verify(scheduledConfigRepository, times(1)).findAll(any(Pageable.class));
+
+            assertThat(responseEntity).isNotNull();
+            assertThat(responseEntity.getStatusCode().is2xxSuccessful()).isTrue();
+            assertThat(responseEntity.getBody()).isEmpty();
         }
 
         @Test
         void get_scheduled_configs_with_multiple_records() {
-            fail("Not yet implemented!");
+            when(scheduledConfigRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(List.of(
+                    ScheduledConfigEntry.builder().build()
+            )));
+            ResponseEntity<List<ScheduledConfigDto>> responseEntity = underTest.getScheduledConfigs(0, 100);
+
+            verify(scheduledConfigRepository, times(1)).findAll(any(Pageable.class));
+
+            assertThat(responseEntity).isNotNull();
+            assertThat(responseEntity.getStatusCode().is2xxSuccessful()).isTrue();
+            assertThat(responseEntity.getBody()).isEmpty();
         }
 
         @ParameterizedTest
-        @MethodSource("de.mczul.config.web.DefaultControllerTest#buildValidDto")
+        @MethodSource("de.mczul.config.model.SampleProvider#buildValidDtos")
         void post_scheduled_config_with_valid_sample() {
             fail("Not yet implemented!");
         }
 
         @ParameterizedTest
-        @MethodSource("de.mczul.config.web.DefaultControllerTest#buildInvalidDto")
+        @MethodSource("de.mczul.config.model.SampleProvider#buildInvalidDtos")
         void post_scheduled_config_with_invalid_sample() {
             fail("Not yet implemented!");
         }

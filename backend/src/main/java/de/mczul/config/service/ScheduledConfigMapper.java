@@ -5,7 +5,7 @@ import de.mczul.config.model.ScheduledConfigEntry;
 import de.mczul.config.model.ScheduledConfigPast;
 import org.mapstruct.*;
 
-@Mapper
+@Mapper(injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 @DecoratedWith(ScheduledConfigMapperDecorator.class)
 public interface ScheduledConfigMapper {
 
@@ -13,7 +13,7 @@ public interface ScheduledConfigMapper {
             @Mapping(target = "author", ignore = true),
             @Mapping(target = "history", ignore = true)
     })
-    ScheduledConfigDto fromDomain(ScheduledConfigEntry domain);
+    ScheduledConfigDto toDto(ScheduledConfigEntry domain);
 
     @InheritInverseConfiguration
     ScheduledConfigEntry toDomain(ScheduledConfigDto dto);

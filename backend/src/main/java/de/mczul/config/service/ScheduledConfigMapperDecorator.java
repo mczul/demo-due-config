@@ -18,8 +18,8 @@ public abstract class ScheduledConfigMapperDecorator implements ScheduledConfigM
     private ScheduledConfigRepository scheduledConfigRepository;
 
     @Override
-    public ScheduledConfigDto fromDomain(ScheduledConfigEntry entry) {
-        ScheduledConfigDto result = delegate.fromDomain(entry);
+    public ScheduledConfigDto toDto(ScheduledConfigEntry entry) {
+        ScheduledConfigDto result = delegate.toDto(entry);
 
         // Comment history
         List<ScheduledConfigEntry> entries = scheduledConfigRepository.findHistory(entry.getKey(), entry.getCreated());

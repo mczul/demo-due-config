@@ -127,7 +127,7 @@ class DefaultControllerIT {
          TODO: Current test might be to close to actual implementation: find a way to test relevant aspects (as e.g.
                correct interpretation of intended query and type mapping) without mirroring the implementation details
         */
-            final List<ScheduledConfigDto> expectedDtos = expectedEntries.stream().map(scheduledConfigMapper::fromDomain).collect(Collectors.toUnmodifiableList()); //scheduledConfigMapper.fromDomainList(expectedEntries);
+            final List<ScheduledConfigDto> expectedDtos = expectedEntries.stream().map(scheduledConfigMapper::toDto).collect(Collectors.toUnmodifiableList()); //scheduledConfigMapper.fromDomainList(expectedEntries);
             when(scheduledConfigRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(expectedEntries));
 
             final MvcResult result = mockMvc
