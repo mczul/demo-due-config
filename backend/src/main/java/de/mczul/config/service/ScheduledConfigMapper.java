@@ -10,8 +10,8 @@ import org.mapstruct.*;
 public interface ScheduledConfigMapper {
 
     @Mappings({
-            @Mapping(target = "author", ignore = true),
-            @Mapping(target = "history", ignore = true)
+            @Mapping(target = "history", ignore = true),
+            @Mapping(target = "historyEntry", ignore = true),
     })
     ScheduledConfigDto toDto(ScheduledConfigEntry domain);
 
