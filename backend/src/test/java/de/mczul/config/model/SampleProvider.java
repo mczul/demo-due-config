@@ -1,5 +1,7 @@
 package de.mczul.config.model;
 
+import de.mczul.config.AppConstants;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +31,7 @@ public class SampleProvider {
                     .value(String.valueOf(i))
                     .created(entry.getCreated().minusDays(i).minusHours(i))
                     .author(entry.getAuthor())
-                    .comment(String.format("This is a comment for config %d", numberOfHistoryEntries - i))
+                    .comment(String.format(AppConstants.DEFAULT_LOCALE, "This is a comment for config %d", numberOfHistoryEntries - i))
                     .build();
             history.add(build);
         }
@@ -173,16 +175,6 @@ public class SampleProvider {
                         .author(null)
                         .comment(null)
                         .history(Collections.emptyList())
-                        .build(),
-                // History is null
-                ScheduledConfigDto.builder()
-                        .key("HISTORY_IS_NULL")
-                        .validFrom(ZonedDateTime.now())
-                        .value("MY_VALUE_3")
-                        .created(ZonedDateTime.now().minusMinutes(1))
-                        .author("A")
-                        .comment(null)
-                        .history(null)
                         .build()
         );
     }

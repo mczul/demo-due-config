@@ -1,5 +1,6 @@
 package de.mczul.config.web;
 
+import de.mczul.config.AppConstants;
 import de.mczul.config.model.ConfigQueryResponse;
 import de.mczul.config.model.ScheduledConfigDto;
 import de.mczul.config.model.ScheduledConfigEntry;
@@ -61,7 +62,7 @@ public class DefaultController {
     ) {
         Optional<ScheduledConfigEntry> entryOptional = scheduledConfigService.get(key);
         var queryResponse = ConfigQueryResponse.builder()
-                .key(key.toLowerCase())
+                .key(key.toLowerCase(AppConstants.DEFAULT_LOCALE))
                 .referenceTime(ZonedDateTime.now())
                 .build();
         if (entryOptional.isEmpty()) {

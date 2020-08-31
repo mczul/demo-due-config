@@ -1,5 +1,6 @@
 package de.mczul.config.service;
 
+import de.mczul.config.AppConstants;
 import de.mczul.config.model.ScheduledConfigEntry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @Slf4j
@@ -19,7 +19,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ScheduledConfigService {
-    public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
     private final ScheduledConfigRepository entryRepository;
 
     @Transactional
@@ -27,7 +26,7 @@ public class ScheduledConfigService {
         return entryRepository.save(
                 entry
                         // Assure uniform key representation
-                        .withKey(entry.getKey().toLowerCase(DEFAULT_LOCALE))
+                        .withKey(entry.getKey().toLowerCase(AppConstants.DEFAULT_LOCALE))
                         // Set created timestamp
                         .withCreated(ZonedDateTime.now(ZoneId.of("UTC")))
         );
@@ -35,7 +34,7 @@ public class ScheduledConfigService {
 
     @Transactional(readOnly = true)
     public Optional<ScheduledConfigEntry> get(String key) {
-        return entryRepository.findCurrentByKey(key.toLowerCase(DEFAULT_LOCALE));
+        return entryRepository.findCurrentByKey(key.toLowerCase(AppConstants.DEFAULT_LOCALE));
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 package de.mczul.config.model;
 
+import de.mczul.config.AppConstants;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -72,7 +73,7 @@ public abstract class AbstractScheduledConfigTest {
                 // TODO: Check why this assertion fails
 //                assertThat(message).as("No localized message provided for '%s'", mandatoryLocale.getDisplayName()).isNotEqualToIgnoringCase(defaultMessage);
                 assertThat(message)
-                        .as("No message translation for '%s' with locale '%s'", messageTemplate, mandatoryLocale.getDisplayName())
+                        .as("No message translation for '%s' with locale '%s'", messageTemplate, mandatoryLocale.getDisplayName(AppConstants.DEFAULT_LOCALE))
                         .doesNotMatch(MESSAGE_TEMPLATE_INDICATOR_PATTERN);
             }
         }

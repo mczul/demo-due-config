@@ -1,5 +1,6 @@
 package de.mczul.config.web;
 
+import de.mczul.config.AppConstants;
 import de.mczul.config.model.ConfigQueryResponse;
 import de.mczul.config.model.SampleProvider;
 import de.mczul.config.model.ScheduledConfigDto;
@@ -81,7 +82,7 @@ public class DefaultControllerTest {
             // ConfigQueryResponse
             ConfigQueryResponse response = responseEntity.getBody();
             assertThat(response).isNotNull();
-            assertThat(response.getKey()).isEqualTo(expectedEntry.getKey().toLowerCase());
+            assertThat(response.getKey()).isEqualTo(expectedEntry.getKey().toLowerCase(AppConstants.DEFAULT_LOCALE));
             assertThat(response.getValue()).isEqualTo(expectedEntry.getValue());
             assertThat(response.getReferenceTime()).isBetween(ZonedDateTime.now().minusSeconds(1), ZonedDateTime.now());
         }
@@ -106,7 +107,7 @@ public class DefaultControllerTest {
             // ConfigQueryResponse
             ConfigQueryResponse response = responseEntity.getBody();
             assertThat(response).isNotNull();
-            assertThat(response.getKey()).isEqualTo(key.toLowerCase());
+            assertThat(response.getKey()).isEqualTo(key.toLowerCase(AppConstants.DEFAULT_LOCALE));
             assertThat(response.getReferenceTime()).isBetween(ZonedDateTime.now().minusSeconds(1), ZonedDateTime.now());
             assertThat(response.getValue()).isNull();
         }
