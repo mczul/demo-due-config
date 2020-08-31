@@ -1,14 +1,16 @@
 package de.mczul.config.model;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
 public class SampleProvider {
 
-    public static ScheduledConfigDto convertToDto(ScheduledConfigEntry entry) {
-        return ScheduledConfigDto.builder()
+    public static ScheduledConfigDto convertToDto(ScheduledConfigEntry entry, int numberOfHistoryEntries) {
+        var result = ScheduledConfigDto.builder()
                 .id(entry.getId())
                 .key(entry.getKey())
                 .validFrom(entry.getValidFrom())
@@ -17,6 +19,22 @@ public class SampleProvider {
                 .author(entry.getAuthor())
                 .comment(entry.getComment())
                 .build();
+
+        List<ScheduledConfigPast> history = new ArrayList<>();
+        for (int i = 0; i < numberOfHistoryEntries; i++) {
+            ScheduledConfigPast build = ScheduledConfigPast.builder()
+                    .id(new Random().nextInt())
+                    .key(entry.getKey())
+                    .validFrom(entry.getValidFrom().minusDays(i))
+                    .value(String.valueOf(i))
+                    .created(entry.getCreated().minusDays(i).minusHours(i))
+                    .author(entry.getAuthor())
+                    .comment(String.format("This is a comment for config %d", numberOfHistoryEntries - i))
+                    .build();
+            history.add(build);
+        }
+
+        return result.withHistory(history);
     }
 
     public static ScheduledConfigEntry convertToDomain(ScheduledConfigDto dto) {
