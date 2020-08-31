@@ -24,6 +24,7 @@ public class ScheduledConfigDto implements ScheduledConfig {
     private ZonedDateTime created;
     private String comment;
     private String author;
+    @Singular(value = "historyEntry", ignoreNullCollections = true)
     @NotNull(message = "{NotNull.scheduledConfig.history.message}")
     private List<ScheduledConfigPast> history;
 
