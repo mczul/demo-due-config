@@ -2,11 +2,13 @@ package de.mczul.config.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.mczul.config.model.ConfigQueryResponse;
+import de.mczul.config.model.SampleProvider;
 import de.mczul.config.model.ScheduledConfigDto;
 import de.mczul.config.model.ScheduledConfigEntry;
 import de.mczul.config.service.ScheduledConfigMapper;
 import de.mczul.config.service.ScheduledConfigRepository;
 import de.mczul.config.testing.IntegrationTest;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -29,6 +31,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -40,7 +43,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -65,14 +68,15 @@ class DefaultControllerIT {
     private ScheduledConfigRepository scheduledConfigRepository;
 
     static Stream<Arguments> buildGetScheduledConfigsArgs() {
+        var random = new Random();
         return Stream.of(
-                arguments(0, 10, List.of(
-                        ScheduledConfigEntry.builder().id(1).key("KEY_A").validFrom(ZonedDateTime.now()).value("23").build(),
-                        ScheduledConfigEntry.builder().id(2).key("KEY_A").validFrom(ZonedDateTime.now().plusDays(1)).value("42").build(),
-                        ScheduledConfigEntry.builder().id(3).key("KEY_B").validFrom(ZonedDateTime.now()).value("4711").build()
-                        )
+                arguments(0, 10,
+                        SampleProvider.buildValidEntries()
+                                .limit(4)
+                                .map(entry -> entry.withId(random.nextInt()))
+                                .collect(Collectors.toUnmodifiableList())
                 ),
-                arguments(1, 1, List.of())
+                arguments(1, 1, Lists.emptyList())
         );
     }
 
@@ -105,12 +109,7 @@ class DefaultControllerIT {
         void handle_query_by_key_with_null_value_entry() throws Exception {
             final String key = "KEY_WITH_NULL_VALUE";
             when(scheduledConfigRepository.findCurrentByKey(key)).thenReturn(
-                    Optional.of(ScheduledConfigEntry.builder()
-                            .key(key)
-                            .validFrom(ZonedDateTime.now().minusDays(1))
-                            .value(null)
-                            .created(ZonedDateTime.now())
-                            .build())
+                    Optional.of(SampleProvider.buildValidEntries().findFirst().orElseThrow().withId(42))
             );
             checkNullValueQueryResponse(key);
         }
@@ -137,6 +136,7 @@ class DefaultControllerIT {
                                     .param(RestConstants.QUERY_PARAM_PAGE_SIZE, String.valueOf(pageSize))
                     )
                     .andExpect(status().isOk())
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
                     .andReturn();
 
             verify(scheduledConfigRepository).findAll(PageRequest.of(pageIndex, pageSize, Sort.by("key", "validFrom")));
@@ -195,7 +195,7 @@ class DefaultControllerIT {
                             .content(content)
             )
                     .andExpect(status().isBadRequest())
-                    .andExpect(header().string("Content-Type", MediaType.TEXT_PLAIN_VALUE))
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
                     .andReturn();
 
             assertThat(result.getResponse().getContentAsString()).as("No content returned after posting invalid config dto").isNotBlank();
