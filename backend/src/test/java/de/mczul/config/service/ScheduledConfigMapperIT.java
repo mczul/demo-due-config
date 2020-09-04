@@ -18,6 +18,10 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+/**
+ * Lightweight version of test using Mockito is not possible due to Mapstruct restrictions
+ * (https://github.com/mapstruct/mapstruct/issues/1683)
+ */
 @DisplayName("ScheduledConfigMapper integration tests")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @IntegrationTest
@@ -71,7 +75,6 @@ class ScheduledConfigMapperIT {
                 .sorted(Comparator.comparing(ScheduledConfigEntry::getCreated).reversed())
                 .collect(Collectors.toUnmodifiableList());
 
-        // TODO: Check if mocking would be a faster alternative
         scheduledConfigRepository.saveAll(entryList);
 
         final var expected = relevantEntryList.stream()
