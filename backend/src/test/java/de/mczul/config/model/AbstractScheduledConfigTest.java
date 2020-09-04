@@ -66,7 +66,7 @@ public abstract class AbstractScheduledConfigTest {
                     .doesNotMatch(MESSAGE_TEMPLATE_INDICATOR_PATTERN);
 
             // Fetch the constraint violation message for the default locale
-            String defaultMessage = VALIDATOR_MESSAGE_INTERPOLATOR.interpolate(messageTemplate, null);
+//            String defaultMessage = VALIDATOR_MESSAGE_INTERPOLATOR.interpolate(messageTemplate, null);
             // Iterate over all additional locales that must be supported
             for (Locale mandatoryLocale : MANDATORY_VALIDATION_LOCALES) {
                 final String message = VALIDATOR_MESSAGE_INTERPOLATOR.interpolate(messageTemplate, null, mandatoryLocale);
