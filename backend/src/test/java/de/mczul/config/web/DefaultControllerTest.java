@@ -170,13 +170,13 @@ public class DefaultControllerTest {
             sample = sample.withId(null);
             var entry = SampleProvider.convertToDomain(sample);
 
-            when(scheduledConfigMapper.toDomain(sample)).thenReturn(entry);
+            when(scheduledConfigMapper.toEntry(sample)).thenReturn(entry);
             when(scheduledConfigService.set(entry)).thenReturn(entry.withId(expectedId));
             when(scheduledConfigMapper.toDto(entry.withId(expectedId))).thenReturn(sample.withId(expectedId));
 
             ResponseEntity<ScheduledConfigDto> response = underTest.postScheduledConfig(sample);
 
-            verify(scheduledConfigMapper, times(1)).toDomain(any(ScheduledConfigDto.class));
+            verify(scheduledConfigMapper, times(1)).toEntry(any(ScheduledConfigDto.class));
             verify(scheduledConfigService, times(1)).set(any(ScheduledConfigEntry.class));
             verify(scheduledConfigMapper, times(1)).toDto(any(ScheduledConfigEntry.class));
 

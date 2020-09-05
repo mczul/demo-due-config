@@ -1,6 +1,7 @@
 package de.mczul.config.model;
 
 import de.mczul.config.AppConstants;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -24,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @see ScheduledConfigEntryTest#buildValid()
  * @see ScheduledConfigEntryTest#buildInvalid()
  */
+@Slf4j
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class AbstractScheduledConfigTest {
     public static final Pattern MESSAGE_TEMPLATE_INDICATOR_PATTERN = Pattern.compile("^\\{");
@@ -70,6 +72,7 @@ public abstract class AbstractScheduledConfigTest {
             // Iterate over all additional locales that must be supported
             for (Locale mandatoryLocale : MANDATORY_VALIDATION_LOCALES) {
                 final String message = VALIDATOR_MESSAGE_INTERPOLATOR.interpolate(messageTemplate, null, mandatoryLocale);
+                LOG.info(message);
                 // TODO: Check why this assertion fails
 //                assertThat(message).as("No localized message provided for '%s'", mandatoryLocale.getDisplayName()).isNotEqualToIgnoringCase(defaultMessage);
                 assertThat(message)

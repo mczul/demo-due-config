@@ -40,7 +40,7 @@ public interface ScheduledConfigRepository extends JpaRepository<ScheduledConfig
     @Query("SELECT e " +
             "FROM ScheduledConfigEntry e " +
             "WHERE e.key = ?1 " +
-            "AND e.created <= ?2 " +
+            "AND e.created < ?2 " +
             "ORDER BY e.created DESC")
     List<ScheduledConfigEntry> findHistory(String key, ZonedDateTime limit);
 }

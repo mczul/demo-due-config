@@ -156,7 +156,7 @@ class DefaultControllerIT {
                     .created(ZonedDateTime.now().minusMinutes(1))
                     .author("john.doe")
                     .build();
-            final ScheduledConfigEntry expectedEntry = scheduledConfigMapper.toDomain(sample.withId(42));
+            final ScheduledConfigEntry expectedEntry = scheduledConfigMapper.toEntry(sample.withId(42));
 
             when(scheduledConfigRepository.save(any(ScheduledConfigEntry.class))).thenReturn(expectedEntry);
             final byte[] content = objectMapper.writeValueAsBytes(sample);

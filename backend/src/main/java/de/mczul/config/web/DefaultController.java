@@ -49,7 +49,7 @@ public class DefaultController {
     @PostMapping
     @ResponseBody
     public ResponseEntity<ScheduledConfigDto> postScheduledConfig(@RequestBody @Valid ScheduledConfigDto dto) {
-        ScheduledConfigEntry submittedEntry = scheduledConfigMapper.toDomain(dto);
+        ScheduledConfigEntry submittedEntry = scheduledConfigMapper.toEntry(dto);
         ScheduledConfigEntry savedEntry = scheduledConfigService.set(submittedEntry);
         ScheduledConfigDto result = scheduledConfigMapper.toDto(savedEntry);
 

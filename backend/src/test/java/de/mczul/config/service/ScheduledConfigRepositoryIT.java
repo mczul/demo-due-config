@@ -77,22 +77,19 @@ class ScheduledConfigRepositoryIT {
 
         underTest.saveAll(entries);
 
-        // Descending order by creation timestamp
-        var expectedIds = entries.stream()
-                .filter(entry -> key.equalsIgnoreCase(entry.getKey()))
-                .sorted(Comparator.comparing(ScheduledConfigEntry::getCreated).reversed())
-                .map(ScheduledConfigEntry::getId)
-                .collect(Collectors.toUnmodifiableList());
-        var lastCreated = entries.stream()
-                .filter(entry -> key.equalsIgnoreCase(entry.getKey()))
-                .max(Comparator.comparing(ScheduledConfigEntry::getCreated)).orElseThrow()
-                .getCreated();
-        // Database query
-        var queryResult = underTest.findHistory(key, lastCreated);
-        assertThat(queryResult).as("Database query returned NULL").isNotNull();
+        for (ScheduledConfigEntry referenceEntry : entries) {
+            // Descending order by creation timestamp, same key and created before reference
+            List<ScheduledConfigEntry> expected = entries.stream()
+                    .filter(e -> Objects.equals(e.getKey(), referenceEntry.getKey()))
+                    .filter(e -> e.getCreated().isBefore(referenceEntry.getCreated()))
+                    .sorted(Comparator.comparing(ScheduledConfigEntry::getCreated).reversed())
+                    .collect(Collectors.toUnmodifiableList());
+            List<ScheduledConfigEntry> actual = underTest.findHistory(referenceEntry.getKey(), referenceEntry.getCreated());
 
-        var actualIds = queryResult.stream().map(ScheduledConfigEntry::getId).collect(Collectors.toUnmodifiableList());
-        assertThat(actualIds).as("Actual entry ids differ from expected").containsExactlyElementsOf(expectedIds);
+            assertThat(actual).isNotNull();
+            assertThat(actual).hasSameSizeAs(expected);
+            assertThat(actual).containsExactlyElementsOf(expected);
+        }
     }
 
     @Transactional
