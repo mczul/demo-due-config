@@ -127,8 +127,7 @@ class DefaultControllerIT {
                correct interpretation of intended query and type mapping) without mirroring the implementation details
         */
             final List<ScheduledConfigDto> expectedDtos = expectedEntries.stream().map(scheduledConfigMapper::toDto).collect(Collectors.toUnmodifiableList()); //scheduledConfigMapper.fromDomainList(expectedEntries);
-            when(scheduledConfigRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(expectedEntries));
-
+            when(scheduledConfigRepository.findAllLatest(any(Pageable.class))).thenReturn(new PageImpl<>(expectedEntries));
             final MvcResult result = mockMvc
                     .perform(
                             get(RestConstants.PATH_PREFIX_API)
@@ -138,8 +137,7 @@ class DefaultControllerIT {
                     .andExpect(status().isOk())
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
                     .andReturn();
-
-            verify(scheduledConfigRepository).findAll(PageRequest.of(pageIndex, pageSize, Sort.by("key", "validFrom")));
+            verify(scheduledConfigRepository).findAllLatest(PageRequest.of(pageIndex, pageSize, Sort.by("key", "validFrom")));
             final byte[] content = result.getResponse().getContentAsByteArray();
             final ScheduledConfigDto[] dtoArray = objectMapper.readValue(content, ScheduledConfigDto[].class);
 

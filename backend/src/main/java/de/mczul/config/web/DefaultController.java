@@ -40,14 +40,13 @@ public class DefaultController {
             @RequestParam(name = RestConstants.QUERY_PARAM_PAGE_SIZE, required = false, defaultValue = "10") int pageSize
     ) {
         PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("key", "validFrom"));
-        Page<ScheduledConfigEntry> domainPage = scheduledConfigRepository.findAll(pageRequest);
+        Page<ScheduledConfigEntry> domainPage = scheduledConfigRepository.findAllLatest(pageRequest);
 
         List<ScheduledConfigDto> dtos = domainPage.stream().map(scheduledConfigMapper::toDto).collect(Collectors.toUnmodifiableList());
         return ResponseEntity.ok(dtos);
     }
 
     @PostMapping
-    @ResponseBody
     public ResponseEntity<ScheduledConfigDto> postScheduledConfig(@RequestBody @Valid ScheduledConfigDto dto) {
         ScheduledConfigEntry submittedEntry = scheduledConfigMapper.toEntry(dto);
         ScheduledConfigEntry savedEntry = scheduledConfigService.set(submittedEntry);

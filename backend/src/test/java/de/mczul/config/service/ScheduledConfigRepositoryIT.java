@@ -8,6 +8,8 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
@@ -17,8 +19,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summingInt;
 import static org.assertj.core.api.Assertions.assertThat;
 
+// TODO: Reduce / remove test data redundancy with centralized data initialization
 @DisplayName("ScheduledConfigRepository integration tests")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @IntegrationTest
@@ -90,6 +95,66 @@ class ScheduledConfigRepositoryIT {
             assertThat(actual).hasSameSizeAs(expected);
             assertThat(actual).containsExactlyElementsOf(expected);
         }
+    }
+
+    @Transactional
+    @Test
+    void find_all_latest() {
+        final String firstKey = "MY_KEY_1";
+        final String secondKey = "MY_KEY_2";
+        var entries = List.of(
+                ScheduledConfigEntry.builder()
+                        .key(firstKey)
+                        .validFrom(ZonedDateTime.now().plusHours(1))
+                        .value("1")
+                        .created(ZonedDateTime.now().minusHours(1))
+                        .author("A")
+                        .comment("Valid in 1 hour; Set 1 hour ago")
+                        .build(),
+                ScheduledConfigEntry.builder()
+                        .key(firstKey)
+                        .validFrom(ZonedDateTime.now().plusHours(12))
+                        .value("2")
+                        .created(ZonedDateTime.now().minusHours(12))
+                        .author("B")
+                        .comment("Valid in 12 hours; Set 12 hours ago")
+                        .build(),
+                ScheduledConfigEntry.builder()
+                        .key(secondKey)
+                        .validFrom(ZonedDateTime.now().plusHours(6))
+                        .value("X")
+                        .created(ZonedDateTime.now().minusHours(6))
+                        .author("C")
+                        .comment("Something completely irrelevant")
+                        .build()
+        );
+
+        underTest.saveAll(entries);
+
+        final var firstExpected = entries.stream()
+                .filter(e -> firstKey.equalsIgnoreCase(e.getKey()))
+                .max(Comparator.comparing(ScheduledConfigEntry::getCreated))
+                .orElseThrow();
+        final var secondExpected = entries.stream()
+                .filter(e -> secondKey.equalsIgnoreCase(e.getKey()))
+                .max(Comparator.comparing(ScheduledConfigEntry::getCreated))
+                .orElseThrow();
+        final var expected = new PageImpl<>(List.of(firstExpected, secondExpected));
+        final var actual = underTest.findAllLatest(PageRequest.of(0, 2));
+
+        // Checking expectations for test setup failures
+        assertThat(expected).hasSizeGreaterThanOrEqualTo(2);
+        assertThat(expected.stream().map(ScheduledConfigEntry::getKey).distinct().count())
+                .as("Test data does not match requirements - at least two distinct keys are needed!")
+                .isGreaterThanOrEqualTo(2);
+        assertThat(expected.stream()
+                .collect(groupingBy(ScheduledConfigEntry::getKey, summingInt(ScheduledConfigEntry::getId))).values().stream()
+                .anyMatch(count -> count > 1))
+                .as("Test data does not match requirements - at least one key needs multiple config entries!")
+                .isTrue();
+        // Checking actual query result
+        assertThat(actual.getTotalElements()).isEqualTo(expected.getTotalElements());
+        assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
 
     @Transactional

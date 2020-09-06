@@ -122,9 +122,9 @@ public class DefaultControllerTest {
             final int pageSize = 34;
             final var argCaptor = ArgumentCaptor.forClass(Pageable.class);
 
-            when(scheduledConfigRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(Lists.emptyList()));
+            when(scheduledConfigRepository.findAllLatest(any(Pageable.class))).thenReturn(new PageImpl<>(Lists.emptyList()));
             underTest.getScheduledConfigs(pageIndex, pageSize);
-            verify(scheduledConfigRepository).findAll(argCaptor.capture());
+            verify(scheduledConfigRepository).findAllLatest(argCaptor.capture());
 
             assertThat(argCaptor.getValue().getPageNumber())
                     .as("Wrong page number passed to the repository.")
@@ -136,10 +136,9 @@ public class DefaultControllerTest {
 
         @Test
         void get_scheduled_configs_with_empty_database() {
-            when(scheduledConfigRepository.findAll(any(Pageable.class))).thenReturn(Page.empty());
+            when(scheduledConfigRepository.findAllLatest(any(Pageable.class))).thenReturn(Page.empty());
             ResponseEntity<List<ScheduledConfigDto>> responseEntity = underTest.getScheduledConfigs(12, 34);
-
-            verify(scheduledConfigRepository, times(1)).findAll(any(Pageable.class));
+            verify(scheduledConfigRepository, times(1)).findAllLatest(any(Pageable.class));
 
             assertThat(responseEntity).isNotNull();
             assertThat(responseEntity.getStatusCode().is2xxSuccessful()).isTrue();
@@ -149,12 +148,10 @@ public class DefaultControllerTest {
         @Test
         void get_scheduled_configs_with_multiple_records() {
             var samples = SampleProvider.buildValidEntries().collect(Collectors.toUnmodifiableList());
-            when(scheduledConfigRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(samples));
+            when(scheduledConfigRepository.findAllLatest(any(Pageable.class))).thenReturn(new PageImpl<>(samples));
             when(scheduledConfigMapper.toDto(any())).thenAnswer((invocation) -> SampleProvider.convertToDto(invocation.getArgument(0), new Random().nextInt(10)));
-
             ResponseEntity<List<ScheduledConfigDto>> responseEntity = underTest.getScheduledConfigs(0, 100);
-
-            verify(scheduledConfigRepository, times(1)).findAll(any(Pageable.class));
+            verify(scheduledConfigRepository, times(1)).findAllLatest(any(Pageable.class));
             verify(scheduledConfigMapper, times(samples.size())).toDto(any());
 
             assertThat(responseEntity).isNotNull();
