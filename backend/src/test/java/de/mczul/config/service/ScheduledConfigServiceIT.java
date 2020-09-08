@@ -22,8 +22,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 class ScheduledConfigServiceIT {
 
     @Autowired
-    private ScheduledConfigRepository entryRepository;
-    @Autowired
     private ScheduledConfigService underTest;
 
     @Test

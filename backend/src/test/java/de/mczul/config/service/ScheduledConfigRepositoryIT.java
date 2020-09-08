@@ -33,8 +33,6 @@ class ScheduledConfigRepositoryIT {
     private ScheduledConfigRepository underTest;
     @Autowired
     private ScheduledConfigRepository repository;
-    @Autowired
-    private ScheduledConfigMapper mapper;
 
     @BeforeEach
     void beforeEach() {

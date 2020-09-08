@@ -4,14 +4,12 @@ import de.mczul.config.model.ScheduledConfig;
 import de.mczul.config.model.ScheduledConfigDto;
 import de.mczul.config.model.ScheduledConfigEntry;
 import de.mczul.config.model.ScheduledConfigPast;
-import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Mapper
 public abstract class ScheduledConfigMapper {
     @Autowired

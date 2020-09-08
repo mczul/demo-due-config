@@ -1,12 +1,12 @@
 package de.mczul.config.web;
 
-public interface RestConstants {
+public class RestConstants {
 
-    String PATH_PREFIX_API = "/api/v1";
+    public static final String PATH_PREFIX_API = "/api/v1";
 
-    String QUERY_PARAM_PAGE_INDEX = "pageIndex";
-    String QUERY_PARAM_PAGE_SIZE = "pageSize";
+    public static final String QUERY_PARAM_PAGE_INDEX = "pageIndex";
+    public static final String QUERY_PARAM_PAGE_SIZE = "pageSize";
 
-    String PATH_VARIABLE_KEY = "key";
+    public static final String PATH_VARIABLE_KEY = "key";
 
 }

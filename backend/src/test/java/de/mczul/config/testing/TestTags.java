@@ -1,7 +1,7 @@
 package de.mczul.config.testing;
 
-public interface TestTags {
+public class TestTags {
 
-    String INTEGRATION_TEST = "integration";
+    public static final String INTEGRATION_TEST = "integration";
 
 }

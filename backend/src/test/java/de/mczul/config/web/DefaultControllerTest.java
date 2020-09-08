@@ -161,10 +161,10 @@ public class DefaultControllerTest {
 
         @ParameterizedTest
         @MethodSource("de.mczul.config.model.SampleProvider#buildValidDtos")
-        void post_scheduled_config_with_valid_sample(ScheduledConfigDto sample) {
+        void post_scheduled_config_with_valid_sample(ScheduledConfigDto source) {
             final int expectedId = new Random().nextInt();
             // Clear ID attribute
-            sample = sample.withId(null);
+            var sample = source.withId(null);
             var entry = SampleProvider.convertToDomain(sample);
 
             when(scheduledConfigMapper.toEntry(sample)).thenReturn(entry);

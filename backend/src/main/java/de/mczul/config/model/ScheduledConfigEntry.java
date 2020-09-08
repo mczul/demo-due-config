@@ -40,7 +40,6 @@ public class ScheduledConfigEntry implements ScheduledConfig {
     @Column(name = "author")
     private String author;
 
-    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object other) {
         return isEqual(other);

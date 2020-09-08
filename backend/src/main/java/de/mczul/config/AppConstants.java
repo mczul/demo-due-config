@@ -2,11 +2,11 @@ package de.mczul.config;
 
 import java.util.Locale;
 
-public interface AppConstants {
+public class AppConstants {
 
-    String PROFILES_TEST = "test";
-    String PROFILES_NOT_TEST = "!" + PROFILES_TEST;
+    public static final String PROFILES_TEST = "test";
+    public static final String PROFILES_NOT_TEST = "!" + PROFILES_TEST;
 
-    Locale DEFAULT_LOCALE = Locale.ENGLISH;
+    public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
 
 }

@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.ZonedDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.verify;
 
 @DisplayName("ScheduledConfigService unit tests")
@@ -47,6 +48,6 @@ class ScheduledConfigServiceTest {
     @Disabled("Not yet implemented")
     @Test
     void cleanup_must_only_delete_entries_with_newer_valid_from_timestamp() {
-        // TODO: Implementation is missing
+        fail("Not implemented yet!");
     }
 }
