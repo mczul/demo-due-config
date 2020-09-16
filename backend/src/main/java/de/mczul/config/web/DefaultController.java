@@ -36,7 +36,6 @@ public class DefaultController {
     final ScheduledConfigService scheduledConfigService;
     final ScheduledConfigMapper scheduledConfigMapper;
 
-    //    @Validated({Default.class, OnUpdate.class})
     @GetMapping
     public ResponseEntity<List<ScheduledConfigDto>> getScheduledConfigs(
             @RequestParam(name = RestConstants.QUERY_PARAM_PAGE_INDEX, required = false, defaultValue = "0") int pageIndex,

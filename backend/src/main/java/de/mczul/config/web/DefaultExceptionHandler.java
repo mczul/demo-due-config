@@ -19,16 +19,6 @@ import javax.validation.ConstraintViolationException;
 @ControllerAdvice
 public class DefaultExceptionHandler {
 
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    @ResponseBody
-//    ResponseEntity<String> handleInvalidArguments(MethodArgumentNotValidException ex) {
-//        return ResponseEntity
-//                .badRequest()
-//                .contentType(MediaType.TEXT_PLAIN)
-//                .body(ex.getLocalizedMessage());
-//    }
-
-
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -58,4 +48,5 @@ public class DefaultExceptionHandler {
         }
         return builder.build();
     }
+    
 }
