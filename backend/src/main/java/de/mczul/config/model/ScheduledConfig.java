@@ -2,11 +2,10 @@ package de.mczul.config.model;
 
 import de.mczul.config.validation.NullOrNotBlank;
 import de.mczul.config.validation.ValidConfigKey;
+import de.mczul.config.validation.ValidationGroups.OnCreate;
+import de.mczul.config.validation.ValidationGroups.OnUpdate;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -17,7 +16,9 @@ public interface ScheduledConfig {
      *
      * @return
      */
-    @Positive(message = "{Positive.scheduledConfig.id.message}")
+    @Null(message = "{ScheduledConfig.id.Null.message}", groups = {OnCreate.class})
+    @NotNull(message = "{ScheduledConfig.id.NotNull.message}", groups = {OnUpdate.class})
+    @Positive(message = "{ScheduledConfig.id.Positive.message}")
     Integer getId();
 
     void setId(Integer id);
@@ -29,7 +30,7 @@ public interface ScheduledConfig {
      *
      * @return
      */
-    @NotBlank(message = "{NotBlank.scheduledConfig.key.message}")
+    @NotBlank(message = "{ScheduledConfig.key.NotBlank.message}")
     @ValidConfigKey
     String getKey();
 
@@ -42,7 +43,7 @@ public interface ScheduledConfig {
      *
      * @return
      */
-    @NotNull(message = "{NotNull.scheduledConfig.validFrom.message}")
+    @NotNull(message = "{ScheduledConfig.validFrom.NotNull.message}")
     ZonedDateTime getValidFrom();
 
     void setValidFrom(ZonedDateTime validFrom);
@@ -65,8 +66,8 @@ public interface ScheduledConfig {
      *
      * @return
      */
-    @NotNull(message = "{NotNull.scheduledConfig.created.message}")
-    @PastOrPresent(message = "{PastOrPresent.scheduledConfig.created.message}")
+    @NotNull(message = "{ScheduledConfig.created.NotNull.message}")
+    @PastOrPresent(message = "{ScheduledConfig.created.PastOrPresent.message}")
     ZonedDateTime getCreated();
 
     void setCreated(ZonedDateTime created);
@@ -78,14 +79,14 @@ public interface ScheduledConfig {
      *
      * @return
      */
-    @NullOrNotBlank(message = "{NullOrNotBlank.scheduledConfig.comment.message}")
+    @NullOrNotBlank(message = "{ScheduledConfig.comment.NullOrNotBlank.message}")
     String getComment();
 
     void setComment(String value);
 
     ScheduledConfig withComment(String value);
 
-    @NotBlank(message = "{NotBlank.scheduledConfig.author.message}")
+    @NotBlank(message = "{ScheduledConfig.author.NotBlank.message}")
     String getAuthor();
 
     void setAuthor(String name);

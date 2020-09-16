@@ -25,7 +25,7 @@ public class ScheduledConfigDto implements ScheduledConfig {
     private String comment;
     private String author;
     @Singular(value = "historyEntry", ignoreNullCollections = true)
-    @NotNull(message = "{NotNull.scheduledConfig.history.message}")
+    @NotNull(message = "{ScheduledConfig.history.NotNull.message}")
     private List<ScheduledConfigPast> history;
 
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")

@@ -139,6 +139,9 @@
                     <includeTests>true</includeTests>
                     <minimumTokens>50</minimumTokens>
                     <minimumPriority>4</minimumPriority>
+                    <rulesets>
+                        <ruleset>/rulesets/java/basic.xml</ruleset>
+                    </rulesets>
                 </configuration>
                 <executions>
                     <execution>

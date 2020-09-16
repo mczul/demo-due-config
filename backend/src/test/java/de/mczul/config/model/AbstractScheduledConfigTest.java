@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class AbstractScheduledConfigTest {
     public static final Pattern MESSAGE_TEMPLATE_INDICATOR_PATTERN = Pattern.compile("^\\{");
-    public static final Pattern ACCEPTABLE_MESSAGE_TEMPLATES_PATTERN = Pattern.compile("^\\{(?:ValidConfigKey|(?:Not(?:Blank|Null)|Positive|NullOrNotBlank|PastOrPresent)\\.scheduledConfig\\..+)\\.message}$");
+    public static final Pattern ACCEPTABLE_MESSAGE_TEMPLATES_PATTERN = Pattern.compile("^\\{(?:ScheduledConfig\\..+\\.)?(?:ValidConfigKey|(?:Not(?:Blank|Null)|Positive|NullOrNotBlank|PastOrPresent|Null))\\.message}$");
     private static final Locale[] MANDATORY_VALIDATION_LOCALES = {Locale.ENGLISH, Locale.GERMAN};
     private static final ValidatorFactory VALIDATOR_FACTORY = Validation.buildDefaultValidatorFactory();
     private static final MessageInterpolator VALIDATOR_MESSAGE_INTERPOLATOR = VALIDATOR_FACTORY.getMessageInterpolator();
