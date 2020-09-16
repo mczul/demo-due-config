@@ -137,7 +137,7 @@
                 <configuration>
                     <targetJdk>${java.version}</targetJdk>
                     <includeTests>true</includeTests>
-                    <minimumTokens>50</minimumTokens>
+                    <minimumTokens>150</minimumTokens>
                     <minimumPriority>4</minimumPriority>
                     <rulesets>
                         <ruleset>/rulesets/java/basic.xml</ruleset>

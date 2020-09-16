@@ -7,6 +7,7 @@ import de.mczul.config.model.ScheduledConfigEntry;
 import de.mczul.config.service.ScheduledConfigMapper;
 import de.mczul.config.service.ScheduledConfigRepository;
 import de.mczul.config.service.ScheduledConfigService;
+import de.mczul.config.validation.ValidationGroups.OnCreate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.groups.Default;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +36,7 @@ public class DefaultController {
     final ScheduledConfigService scheduledConfigService;
     final ScheduledConfigMapper scheduledConfigMapper;
 
+    //    @Validated({Default.class, OnUpdate.class})
     @GetMapping
     public ResponseEntity<List<ScheduledConfigDto>> getScheduledConfigs(
             @RequestParam(name = RestConstants.QUERY_PARAM_PAGE_INDEX, required = false, defaultValue = "0") int pageIndex,
@@ -46,8 +49,9 @@ public class DefaultController {
         return ResponseEntity.ok(dtos);
     }
 
+    @Validated({Default.class, OnCreate.class})
     @PostMapping
-    public ResponseEntity<ScheduledConfigDto> postScheduledConfig(@RequestBody @Valid ScheduledConfigDto dto) {
+    public ResponseEntity<ScheduledConfigDto> postScheduledConfig(@Valid @RequestBody ScheduledConfigDto dto) {
         ScheduledConfigEntry submittedEntry = scheduledConfigMapper.toEntry(dto);
         ScheduledConfigEntry savedEntry = scheduledConfigService.set(submittedEntry);
         ScheduledConfigDto result = scheduledConfigMapper.toDto(savedEntry);

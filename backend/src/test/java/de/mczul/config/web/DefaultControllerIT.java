@@ -1,10 +1,7 @@
 package de.mczul.config.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.mczul.config.model.ConfigQueryResponse;
-import de.mczul.config.model.SampleProvider;
-import de.mczul.config.model.ScheduledConfigDto;
-import de.mczul.config.model.ScheduledConfigEntry;
+import de.mczul.config.model.*;
 import de.mczul.config.service.ScheduledConfigMapper;
 import de.mczul.config.service.ScheduledConfigRepository;
 import de.mczul.config.testing.IntegrationTest;
@@ -179,6 +176,45 @@ class DefaultControllerIT {
         }
 
         @Test
+        void must_prevent_saving_valid_entry_with_id() throws Exception {
+            final ScheduledConfigDto sample = ScheduledConfigDto.builder()
+                    .id(42)
+                    .key("FOO")
+                    .validFrom(ZonedDateTime.now().minusMinutes(1))
+                    .value("BAR")
+                    .created(ZonedDateTime.now().minusMinutes(1))
+                    .author("john.doe")
+                    .build();
+
+            final byte[] content = objectMapper.writeValueAsBytes(sample);
+            final MvcResult result = mockMvc.perform(
+                    post(RestConstants.PATH_PREFIX_API)
+                            .contentType(MediaType.APPLICATION_JSON_VALUE)
+                            .content(content)
+            )
+                    .andExpect(status().isBadRequest())
+                    .andReturn();
+
+            assertThat(result).isNotNull();
+            assertThat(result.getResponse()).isNotNull();
+            assertThat(result.getResponse().getContentAsString()).isNotEmpty();
+            final String responseBody = result.getResponse().getContentAsString();
+            final ValidationErrorResponse errorResponse = objectMapper.readValue(responseBody, ValidationErrorResponse.class);
+            assertThat(errorResponse).isNotNull();
+
+            assertThat(errorResponse.getViolations()).isNotNull();
+            assertThat(errorResponse.getViolations()).isNotEmpty();
+
+            for (Violation violation : errorResponse.getViolations()) {
+                assertAll(
+                        () -> assertThat(violation).isNotNull(),
+                        () -> assertThat(violation.getFieldName()).isNotBlank(),
+                        () -> assertThat(violation.getMessage()).isNotBlank()
+                );
+            }
+        }
+
+        @Test
         void must_handle_invalid_samples_properly() throws Exception {
             final ScheduledConfigDto sample = ScheduledConfigDto.builder()
                     .key("")
@@ -193,7 +229,7 @@ class DefaultControllerIT {
                             .content(content)
             )
                     .andExpect(status().isBadRequest())
-                    .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                     .andReturn();
 
             assertThat(result.getResponse().getContentAsString()).as("No content returned after posting invalid config dto").isNotBlank();
