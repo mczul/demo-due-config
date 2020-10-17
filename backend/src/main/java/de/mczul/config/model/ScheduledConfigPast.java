@@ -2,6 +2,7 @@ package de.mczul.config.model;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.With;
 
 import java.time.ZonedDateTime;
@@ -9,6 +10,7 @@ import java.time.ZonedDateTime;
 @Data
 @Builder
 @With
+@EqualsAndHashCode(of = {"id"})
 public class ScheduledConfigPast implements ScheduledConfig {
     private Integer id;
     private String key;

@@ -4,7 +4,9 @@ import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@ToString
+@EqualsAndHashCode
 @Builder
 @With
 public class Violation {

@@ -7,7 +7,9 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@ToString
+@EqualsAndHashCode
 @Builder
 @With
 public class ValidationErrorResponse {

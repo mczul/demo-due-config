@@ -10,6 +10,7 @@ import java.time.ZonedDateTime;
 @With
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = {"key", "referenceTime"})
 public class ConfigQueryResponse {
     private ZonedDateTime referenceTime;
     private String key;

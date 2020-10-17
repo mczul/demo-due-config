@@ -86,6 +86,11 @@ public interface ScheduledConfig {
 
     ScheduledConfig withComment(String value);
 
+    /**
+     * TODO: Missing
+     *
+     * @return
+     */
     @NotBlank(message = "{ScheduledConfig.author.NotBlank.message}")
     String getAuthor();
 
