@@ -28,7 +28,7 @@ public class ScheduledConfigService {
                         // Assure uniform key representation
                         .withKey(entry.getKey().toLowerCase(AppConstants.DEFAULT_LOCALE))
                         // Set created timestamp
-                        .withCreated(ZonedDateTime.now(ZoneId.of("UTC")))
+                        .withCreated(ZonedDateTime.now(ZoneId.of(AppConstants.DEFAULT_TIMEZONE)))
         );
     }
 

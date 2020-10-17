@@ -27,11 +27,11 @@ public abstract class ScheduledConfigMapper {
     public abstract ScheduledConfigPast toPast(ScheduledConfigEntry entry);
 
     @AfterMapping
-    public void enrich(ScheduledConfig source, @MappingTarget ScheduledConfigDto.ScheduledConfigDtoBuilder dto) {
+    public void enrich(ScheduledConfig source, @MappingTarget ScheduledConfigDto.ScheduledConfigDtoBuilder dtoBuilder) {
         // history
         List<ScheduledConfigEntry> entries = scheduledConfigRepository.findHistory(source.getKey(), source.getCreated());
         List<ScheduledConfigPast> history = entries.stream().map(this::toPast).collect(Collectors.toUnmodifiableList());
-        dto.history(history);
+        dtoBuilder.history(history);
     }
 
 }

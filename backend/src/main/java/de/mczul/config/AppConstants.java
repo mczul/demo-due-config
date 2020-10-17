@@ -8,5 +8,5 @@ public class AppConstants {
     public static final String PROFILES_NOT_TEST = "!" + PROFILES_TEST;
 
     public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
-
+    public static final String DEFAULT_TIMEZONE = "UTC";
 }
